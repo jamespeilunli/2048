@@ -9,6 +9,17 @@ const boardBoundingRect = document.getElementById("board")!.getBoundingClientRec
 const boardMarginTop = boardBoundingRect.top + window.scrollY;
 const boardMarginLeft = boardBoundingRect.left + window.scrollX;
 
+type Point = {
+  i: number,
+  j: number,
+}
+
+function randint(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
 class Tile {
   i: number;
   j: number;
@@ -76,9 +87,32 @@ class Board {
     this.board[toI][toJ] = this.board[fromI][fromJ];
     this.board[fromI][fromJ] = 0;
   }
+
+  spawnTile() {
+    let emptyTiles: Point[] = [];
+
+    for (let i = 0; i < tilesPerRow; i++) {
+      for (let j = 0; j < tilesPerRow; j++) {
+        if (this.board[i][j] === 0) {
+          emptyTiles.push({ i, j })
+        }
+      }
+    }
+
+    if (emptyTiles.length === 0) {
+      alert("You Lose!");
+    } else {
+      const newPoint = emptyTiles[randint(0, emptyTiles.length - 1)];
+      const newValue = randint(1, 100) > 20 ? 2 : 4;
+
+      this.createTile(newValue, newPoint.i, newPoint.j);
+    }
+  }
 }
 
 const board = new Board();
+
+
 for (let i = 0; i < 4; i++) {
   for (let j = 0; j < 4; j++) {
     if (i === j) {
@@ -87,7 +121,6 @@ for (let i = 0; i < 4; i++) {
   }
 }
 
-board.removeTile(2, 2);
-board.moveTile(3, 3, 2, 2);
+board.spawnTile();
 
 console.log(board)
