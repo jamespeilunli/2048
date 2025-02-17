@@ -1,3 +1,24 @@
+:root {
+  --tiles-per-row: 4;
+  --tile-size: 100px;
+  --tile-margin: 10px;
+  --tile-font-size: calc(var(--tile-size) / 2);
+}
+
 body {
   font-family: sans-serif;
+}
+
+#board {
+  width: calc(var(--tiles-per-row) * (2 * var(--tile-margin) + var(--tile-size)));
+  height: calc(var(--tiles-per-row) * (2 * var(--tile-margin) + var(--tile-size)));
+  background-color: beige;
+}
+
+.tile {
+  width: var(--tile-size);
+  height: var(--tile-size);
+  line-height: var(--tile-size);
+  text-align: center;
+  font-size: var(--tile-font-size);
 }
