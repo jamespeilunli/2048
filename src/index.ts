@@ -9,32 +9,30 @@ const boardBoundingRect = document.getElementById("board")!.getBoundingClientRec
 const boardMarginTop = boardBoundingRect.top + window.scrollY;
 const boardMarginLeft = boardBoundingRect.left + window.scrollX;
 
-type Point = {
-  i: number,
-  j: number,
-}
-
 function randint(min: number, max: number) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+type Pos = {
+  i: number,
+  j: number,
+}
+
 class Tile {
-  i: number;
-  j: number;
+  pos: Pos;
   element: HTMLDivElement;
 
-  constructor(value: number, i: number, j: number) {
-    this.i = i;
-    this.j = j;
+  constructor(value: number, pos: Pos) {
+    this.pos = pos;
 
     this.element = document.createElement("div");
     this.element.classList.add("tile");
     this.element.style.backgroundColor = "black";
     this.element.style.color = "pink";
-    this.element.style.left = `${boardMarginLeft + tileMargin + j * (tileSize + tileMargin)}px`;
-    this.element.style.top = `${boardMarginTop + tileMargin + i * (tileSize + tileMargin)}px`;
+    this.element.style.left = `${boardMarginLeft + tileMargin + pos.j * (tileSize + tileMargin)}px`;
+    this.element.style.top = `${boardMarginTop + tileMargin + pos.i * (tileSize + tileMargin)}px`;
     this.element.innerText = value.toString();
     document.getElementById("board")?.appendChild(this.element);
   }
@@ -43,11 +41,10 @@ class Tile {
     this.element.remove();
   }
 
-  moveTo(i: number, j: number) {
-    this.i = i;
-    this.j = j;
-    this.element.style.left = `${boardMarginLeft + tileMargin + j * (tileSize + tileMargin)}px`;
-    this.element.style.top = `${boardMarginTop + tileMargin + i * (tileSize + tileMargin)}px`;
+  moveTo(pos: Pos) {
+    this.pos = pos;
+    this.element.style.left = `${boardMarginLeft + tileMargin + pos.j * (tileSize + tileMargin)}px`;
+    this.element.style.top = `${boardMarginTop + tileMargin + pos.i * (tileSize + tileMargin)}px`;
   }
 }
 
@@ -60,16 +57,16 @@ class Board {
     this.board = Array(tilesPerRow).fill(null).map(() => Array(tilesPerRow).fill(0));
   }
 
-  createTile(value: number, i: number, j: number) {
-    this.tiles.push(new Tile(value, i, j));
-    this.board[i][j] = value;
+  createTile(value: number, pos: Pos) {
+    this.tiles.push(new Tile(value, pos));
+    this.board[pos.i][pos.j] = value;
   }
 
-  removeTile(i: number, j: number) {
-    this.board[i][j] = 0;
+  removeTile(pos: Pos) {
+    this.board[pos.i][pos.j] = 0;
 
     this.tiles.forEach((tile, index) => {
-      if (tile.i === i && tile.j === j) {
+      if (tile.pos === pos) {
         tile.destroy();
         this.tiles.splice(index, 1);
         return;
@@ -77,19 +74,19 @@ class Board {
     })
   }
 
-  moveTile(fromI: number, fromJ: number, toI: number, toJ: number) {
+  moveTile(from: Pos, to: Pos) {
     this.tiles.forEach((tile) => {
-      if (tile.i === fromI && tile.j === fromJ) {
-        tile.moveTo(toI, toJ);
+      if (tile.pos === from) {
+        tile.moveTo(to);
         return;
       }
     })
-    this.board[toI][toJ] = this.board[fromI][fromJ];
-    this.board[fromI][fromJ] = 0;
+    this.board[to.i][to.j] = this.board[from.i][from.j];
+    this.board[from.i][from.j] = 0;
   }
 
   spawnTile() {
-    let emptyTiles: Point[] = [];
+    let emptyTiles: Pos[] = [];
 
     for (let i = 0; i < tilesPerRow; i++) {
       for (let j = 0; j < tilesPerRow; j++) {
@@ -102,21 +99,20 @@ class Board {
     if (emptyTiles.length === 0) {
       alert("You Lose!");
     } else {
-      const newPoint = emptyTiles[randint(0, emptyTiles.length - 1)];
+      const newPos = emptyTiles[randint(0, emptyTiles.length - 1)];
       const newValue = randint(1, 100) > 20 ? 2 : 4;
 
-      this.createTile(newValue, newPoint.i, newPoint.j);
+      this.createTile(newValue, newPos);
     }
   }
 }
 
 const board = new Board();
 
-
 for (let i = 0; i < 4; i++) {
   for (let j = 0; j < 4; j++) {
     if (i === j) {
-      board.createTile(2, i, j);
+      board.createTile(2, { i, j });
     }
   }
 }
