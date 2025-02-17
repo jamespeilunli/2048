@@ -2,7 +2,7 @@
   --tiles-per-row: 4;
   --tile-size: 100px;
   --tile-margin: 10px;
-  --tile-font-size: calc(var(--tile-size) / 2);
+  --tile-font-size: 50px;
 }
 
 body {
@@ -10,9 +10,9 @@ body {
 }
 
 #board {
-  width: calc(var(--tiles-per-row) * (2 * var(--tile-margin) + var(--tile-size)));
-  height: calc(var(--tiles-per-row) * (2 * var(--tile-margin) + var(--tile-size)));
-  background-color: beige;
+  width: calc(var(--tile-margin) + var(--tiles-per-row) * (var(--tile-margin) + var(--tile-size)));
+  height: calc(var(--tile-margin) + var(--tiles-per-row) * (var(--tile-margin) + var(--tile-size)));
+  background-color: aliceblue;
 }
 
 .tile {
@@ -21,4 +21,5 @@ body {
   line-height: var(--tile-size);
   text-align: center;
   font-size: var(--tile-font-size);
+  position: absolute;
 }
