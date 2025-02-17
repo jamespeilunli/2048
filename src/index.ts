@@ -105,18 +105,39 @@ class Board {
       this.createTile(newValue, newPos);
     }
   }
+
+  shiftLine(line: number[]) {
+    let newLine = Array(tilesPerRow).fill(0);
+
+    let i = 0;
+    let prevValue = 0;
+    for (let value of line) {
+      if (value !== 0) {
+        if (value === prevValue) {
+          newLine[i] = value * 2;
+          i++;
+          prevValue = 0;
+        } else {
+          if (prevValue !== 0) {
+            newLine[i] = prevValue;
+            i++;
+          }
+          prevValue = value;
+        }
+      }
+    }
+    if (i < tilesPerRow) newLine[i] = prevValue;
+
+    return newLine;
+  }
 }
 
 const board = new Board();
 
-for (let i = 0; i < 4; i++) {
-  for (let j = 0; j < 4; j++) {
-    if (i === j) {
-      board.createTile(2, { i, j });
-    }
-  }
-}
-
-board.spawnTile();
-
-console.log(board)
+console.log(board.shiftLine([0, 0, 0, 0]))
+console.log(board.shiftLine([2, 0, 0, 0]))
+console.log(board.shiftLine([0, 0, 2, 0]))
+console.log(board.shiftLine([4, 4, 0, 0]))
+console.log(board.shiftLine([4, 8, 2, 0]))
+console.log(board.shiftLine([8, 8, 2, 2]))
+console.log(board.shiftLine([8, 2, 0, 2]))
