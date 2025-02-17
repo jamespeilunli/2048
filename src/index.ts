@@ -1,4 +1,4 @@
-// note: most of the things inside parseInt are strings with "px" suffix
+// note: most of the args inside parseInt are strings with "px" suffix
 const styles = getComputedStyle(document.documentElement);
 const tilesPerRow = parseInt(styles.getPropertyValue('--tiles-per-row'));
 const tileSize = parseInt(styles.getPropertyValue('--tile-size'));
@@ -62,7 +62,7 @@ class Board {
   }
 
   moveTile(fromI:number, fromJ:number, toI:number, toJ:number) {
-    this.tiles.forEach((tile, index) => {
+    this.tiles.forEach((tile) => {
       if (tile.i === fromI && tile.j === fromJ) {
         tile.moveTo(toI, toJ);
         return;
