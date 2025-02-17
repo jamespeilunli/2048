@@ -32,7 +32,7 @@ class Tile {
     this.element.remove();
   }
 
-  moveTo(i:number, j: number) {
+  moveTo(i: number, j: number) {
     this.i = i;
     this.j = j;
     this.element.style.left = `${boardMarginLeft + tileMargin + j * (tileSize + tileMargin)}px`;
@@ -42,16 +42,21 @@ class Tile {
 
 class Board {
   tiles: Tile[];
+  board: number[][];
 
   constructor() {
     this.tiles = [];
+    this.board = Array(tilesPerRow).fill(null).map(() => Array(tilesPerRow).fill(0));
   }
 
   createTile(value: number, i: number, j: number) {
     this.tiles.push(new Tile(value, i, j));
+    this.board[i][j] = value;
   }
 
   removeTile(i: number, j: number) {
+    this.board[i][j] = 0;
+
     this.tiles.forEach((tile, index) => {
       if (tile.i === i && tile.j === j) {
         tile.destroy();
@@ -61,25 +66,28 @@ class Board {
     })
   }
 
-  moveTile(fromI:number, fromJ:number, toI:number, toJ:number) {
+  moveTile(fromI: number, fromJ: number, toI: number, toJ: number) {
     this.tiles.forEach((tile) => {
       if (tile.i === fromI && tile.j === fromJ) {
         tile.moveTo(toI, toJ);
         return;
       }
     })
+    this.board[toI][toJ] = this.board[fromI][fromJ];
+    this.board[fromI][fromJ] = 0;
   }
 }
 
 const board = new Board();
 for (let i = 0; i < 4; i++) {
   for (let j = 0; j < 4; j++) {
-    if (i === j) board.createTile(2, i, j);
+    if (i === j) {
+      board.createTile(2, i, j);
+    }
   }
 }
 
-console.log(board.tiles);
 board.removeTile(2, 2);
-console.log(board.tiles);
 board.moveTile(3, 3, 2, 2);
-console.log(board.tiles);
+
+console.log(board)
