@@ -66,6 +66,7 @@ class Tile {
 class Board {
   tiles: Tile[];
   board: (Tile | null)[][];
+  moved: boolean = false; // have any tiles moved this turn?
 
   constructor() {
     this.tiles = [];
@@ -86,6 +87,8 @@ class Board {
 
   moveTileTo(from: Pos, to: Pos) {
     if (posesEqual(from, to)) return;
+
+    this.moved = true;
 
     this.board[to.i][to.j] = this.board[from.i][from.j];
     this.board[from.i][from.j] = null;
@@ -155,24 +158,28 @@ class Board {
     }
   }
 
-  tick(key: Direction) {
-    if (key === "Left") {
-      this.board.forEach((row) => this.shiftLine(row, key));
-    } if (key === "Right") {
-      this.board.forEach((row) => this.shiftLine([...row].reverse(), key));
-    } if (key === "Up") {
-      this.board.forEach((row, index) => this.shiftLine(getColumn(this.board, index), key));
-    } if (key === "Down") {
-      this.board.forEach((row, index) => this.shiftLine(getColumn(this.board, index).reverse(), key));
+  move(direction: Direction) {
+    if (direction === "Left") {
+      this.board.forEach((row) => this.shiftLine(row, direction));
+    } if (direction === "Right") {
+      this.board.forEach((row) => this.shiftLine([...row].reverse(), direction));
+    } if (direction === "Up") {
+      this.board.forEach((row, index) => this.shiftLine(getColumn(this.board, index), direction));
+    } if (direction === "Down") {
+      this.board.forEach((row, index) => this.shiftLine(getColumn(this.board, index).reverse(), direction));
     }
+  }
+
+  tick(key: Direction) {
+    this.moved = false;
+    this.move(key);
+    if (this.moved) this.spawnTile();
   }
 }
 
 const board = new Board();
 
-for (let i = 0; i < 12; i++) {
-  board.spawnTile();
-}
+board.spawnTile();
 
 window.addEventListener("keydown", (ev) => {
   if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
