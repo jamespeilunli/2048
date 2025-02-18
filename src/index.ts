@@ -20,12 +20,20 @@ type Pos = {
   j: number,
 }
 
+function posesEqual(a: Pos, b: Pos) {
+  return a.i === b.i && a.j === b.j;
+}
+
+type Direction = "ArrowUp" | "ArrowDown" | "ArrowLeft" | "ArrowRight";
+
 class Tile {
   pos: Pos;
+  value: number;
   element: HTMLDivElement;
 
   constructor(value: number, pos: Pos) {
     this.pos = pos;
+    this.value = value;
 
     this.element = document.createElement("div");
     this.element.classList.add("tile");
@@ -50,39 +58,35 @@ class Tile {
 
 class Board {
   tiles: Tile[];
-  board: number[][];
+  board: (Tile | null)[][];
 
   constructor() {
     this.tiles = [];
-    this.board = Array(tilesPerRow).fill(null).map(() => Array(tilesPerRow).fill(0));
+    this.board = Array(tilesPerRow).fill(null).map(() => Array(tilesPerRow).fill(null));
   }
 
   createTile(value: number, pos: Pos) {
-    this.tiles.push(new Tile(value, pos));
-    this.board[pos.i][pos.j] = value;
+    this.board[pos.i][pos.j] = new Tile(value, pos);
+    this.tiles.push(this.board[pos.i][pos.j]!);
   }
 
-  removeTile(pos: Pos) {
-    this.board[pos.i][pos.j] = 0;
+  removeTile(tile: Tile) {
+    this.board[tile.pos.i][tile.pos.j] = null;
+    tile.destroy();
 
-    this.tiles.forEach((tile, index) => {
-      if (tile.pos === pos) {
-        tile.destroy();
-        this.tiles.splice(index, 1);
-        return;
-      }
-    })
+    this.tiles.splice(this.tiles.indexOf(tile), 1);
   }
 
-  moveTile(from: Pos, to: Pos) {
+  moveTileTo(from: Pos, to: Pos) {
+    this.board[to.i][to.j] = this.board[from.i][from.j];
+    this.board[from.i][from.j] = null;
+
     this.tiles.forEach((tile) => {
-      if (tile.pos === from) {
+      if (posesEqual(tile.pos, from)) {
         tile.moveTo(to);
         return;
       }
     })
-    this.board[to.i][to.j] = this.board[from.i][from.j];
-    this.board[from.i][from.j] = 0;
   }
 
   spawnTile() {
@@ -90,7 +94,7 @@ class Board {
 
     for (let i = 0; i < tilesPerRow; i++) {
       for (let j = 0; j < tilesPerRow; j++) {
-        if (this.board[i][j] === 0) {
+        if (!this.board[i][j]) {
           emptyTiles.push({ i, j })
         }
       }
@@ -134,10 +138,14 @@ class Board {
 
 const board = new Board();
 
-console.log(board.shiftLine([0, 0, 0, 0]))
-console.log(board.shiftLine([2, 0, 0, 0]))
-console.log(board.shiftLine([0, 0, 2, 0]))
-console.log(board.shiftLine([4, 4, 0, 0]))
-console.log(board.shiftLine([4, 8, 2, 0]))
-console.log(board.shiftLine([8, 8, 2, 2]))
-console.log(board.shiftLine([8, 2, 0, 2]))
+board.createTile(2, { i: 0, j: 0 });
+board.createTile(2, { i: 1, j: 1 });
+board.createTile(2, { i: 2, j: 2 });
+board.createTile(2, { i: 3, j: 3 });
+board.createTile(2, { i: 3, j: 2 });
+board.createTile(2, { i: 3, j: 1 });
+
+board.removeTile(board.board[2][2]!);
+
+console.log(board.shiftLine(board.board[1].map((tile) => tile?.value ?? 0)))
+console.log(board.shiftLine(board.board[3].map((tile) => tile?.value ?? 0)))
