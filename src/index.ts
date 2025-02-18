@@ -133,14 +133,15 @@ class Board {
     for (let tile of line) {
       if (tile) {
         if (prevTile) {
-          if (tile.value === prevTile.value) {
-            tile.setValue(tile.value * 2);
+          if (prevTile.value === tile.value) {
             this.removeTile(prevTile);
+            this.moveTile(tile.pos, i, direction);
+            tile.setValue(tile.value * 2);
             prevTile = null;
           } else {
-            tile.setValue(prevTile.value);
+            this.moveTile(prevTile.pos, i, direction);
+            prevTile = tile;
           }
-          this.moveTile(tile.pos, i, direction);
           i++;
         } else {
           prevTile = tile;
