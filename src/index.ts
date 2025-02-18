@@ -50,7 +50,15 @@ class Tile {
   }
 
   destroy() {
-    this.element.remove();
+    this.element.classList.remove("fade-in");
+
+    requestAnimationFrame(() => {
+      this.element.classList.add("fade-out");
+    });
+
+    this.element.addEventListener("animationend", () => {
+      this.element.remove();
+    })
   }
 
   moveTo(pos: Pos) {
