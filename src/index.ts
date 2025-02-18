@@ -54,6 +54,11 @@ class Tile {
     this.element.style.left = `${boardMarginLeft + tileMargin + pos.j * (tileSize + tileMargin)}px`;
     this.element.style.top = `${boardMarginTop + tileMargin + pos.i * (tileSize + tileMargin)}px`;
   }
+
+  setValue(newValue: number) {
+    this.value = newValue;
+    this.element.innerText = newValue.toString();
+  }
 }
 
 class Board {
@@ -89,6 +94,13 @@ class Board {
     })
   }
 
+  moveTile(from: Pos, index: number, direction: Direction) {
+    if (direction === "ArrowUp") this.moveTileTo(from, { i: index, j: from.j });
+    if (direction === "ArrowDown") this.moveTileTo(from, { i: tilesPerRow - index - 1, j: from.j });
+    if (direction === "ArrowLeft") this.moveTileTo(from, { i: from.i, j: index });
+    if (direction === "ArrowDown") this.moveTileTo(from, { i: from.i, j: tilesPerRow - index - 1 });
+  }
+
   spawnTile() {
     let emptyTiles: Pos[] = [];
 
@@ -110,29 +122,32 @@ class Board {
     }
   }
 
-  shiftLine(line: number[]) {
-    let newLine = Array(tilesPerRow).fill(0);
-
+  shiftLine(line: (Tile | null)[], direction: Direction) {
     let i = 0;
-    let prevValue = 0;
-    for (let value of line) {
-      if (value !== 0) {
-        if (value === prevValue) {
-          newLine[i] = value * 2;
-          i++;
-          prevValue = 0;
-        } else {
-          if (prevValue !== 0) {
-            newLine[i] = prevValue;
-            i++;
+    let prevTile = null;
+
+    for (let tile of line) {
+      if (tile) {
+        if (prevTile) {
+          if (tile.value === prevTile.value) {
+            tile.setValue(tile.value * 2);
+            this.removeTile(prevTile);
+            prevTile = null;
+          } else {
+            tile.setValue(prevTile.value);
           }
-          prevValue = value;
+          this.moveTile(tile.pos, i, direction);
+          i++;
+        } else {
+          prevTile = tile;
         }
       }
     }
-    if (i < tilesPerRow) newLine[i] = prevValue;
 
-    return newLine;
+    if (prevTile) {
+      prevTile.setValue(prevTile.value);
+      this.moveTile(prevTile.pos, i, direction);
+    }
   }
 }
 
@@ -147,5 +162,5 @@ board.createTile(2, { i: 3, j: 1 });
 
 board.removeTile(board.board[2][2]!);
 
-console.log(board.shiftLine(board.board[1].map((tile) => tile?.value ?? 0)))
-console.log(board.shiftLine(board.board[3].map((tile) => tile?.value ?? 0)))
+board.shiftLine(board.board[1], "ArrowLeft")
+board.shiftLine(board.board[3], "ArrowLeft")
