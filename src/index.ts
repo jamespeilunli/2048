@@ -9,6 +9,8 @@ const boardBoundingRect = document.getElementById("board")!.getBoundingClientRec
 const boardMarginTop = boardBoundingRect.top + window.scrollY;
 const boardMarginLeft = boardBoundingRect.left + window.scrollX;
 
+const getColumn = (matrix: any[][], column: number) => matrix.map((row) => row[column]);
+
 function randint(min: number, max: number) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -24,7 +26,7 @@ function posesEqual(a: Pos, b: Pos) {
   return a.i === b.i && a.j === b.j;
 }
 
-type Direction = "ArrowUp" | "ArrowDown" | "ArrowLeft" | "ArrowRight";
+type Direction = "Up" | "Down" | "Left" | "Right";
 
 class Tile {
   pos: Pos;
@@ -83,6 +85,8 @@ class Board {
   }
 
   moveTileTo(from: Pos, to: Pos) {
+    if (posesEqual(from, to)) return;
+
     this.board[to.i][to.j] = this.board[from.i][from.j];
     this.board[from.i][from.j] = null;
 
@@ -95,10 +99,10 @@ class Board {
   }
 
   moveTile(from: Pos, index: number, direction: Direction) {
-    if (direction === "ArrowUp") this.moveTileTo(from, { i: index, j: from.j });
-    if (direction === "ArrowDown") this.moveTileTo(from, { i: tilesPerRow - index - 1, j: from.j });
-    if (direction === "ArrowLeft") this.moveTileTo(from, { i: from.i, j: index });
-    if (direction === "ArrowDown") this.moveTileTo(from, { i: from.i, j: tilesPerRow - index - 1 });
+    if (direction === "Up") this.moveTileTo(from, { i: index, j: from.j });
+    if (direction === "Down") this.moveTileTo(from, { i: tilesPerRow - index - 1, j: from.j });
+    if (direction === "Left") this.moveTileTo(from, { i: from.i, j: index });
+    if (direction === "Right") this.moveTileTo(from, { i: from.i, j: tilesPerRow - index - 1 });
   }
 
   spawnTile() {
@@ -149,18 +153,28 @@ class Board {
       this.moveTile(prevTile.pos, i, direction);
     }
   }
+
+  tick(key: Direction) {
+    if (key === "Left") {
+      this.board.forEach((row) => this.shiftLine(row, key));
+    } if (key === "Right") {
+      this.board.forEach((row) => this.shiftLine([...row].reverse(), key));
+    } if (key === "Up") {
+      this.board.forEach((row, index) => this.shiftLine(getColumn(this.board, index), key));
+    } if (key === "Down") {
+      this.board.forEach((row, index) => this.shiftLine(getColumn(this.board, index).reverse(), key));
+    }
+  }
 }
 
 const board = new Board();
 
-board.createTile(2, { i: 0, j: 0 });
-board.createTile(2, { i: 1, j: 1 });
-board.createTile(2, { i: 2, j: 2 });
-board.createTile(2, { i: 3, j: 3 });
-board.createTile(2, { i: 3, j: 2 });
-board.createTile(2, { i: 3, j: 1 });
+for (let i = 0; i < 12; i++) {
+  board.spawnTile();
+}
 
-board.removeTile(board.board[2][2]!);
-
-board.shiftLine(board.board[1], "ArrowLeft")
-board.shiftLine(board.board[3], "ArrowLeft")
+window.addEventListener("keydown", (ev) => {
+  if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
+    board.tick(ev.key.slice(5) as Direction);
+  }
+})
