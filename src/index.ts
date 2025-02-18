@@ -101,11 +101,11 @@ class Board {
     })
   }
 
-  moveTile(from: Pos, index: number, direction: Direction) {
-    if (direction === "Up") this.moveTileTo(from, { i: index, j: from.j });
-    if (direction === "Down") this.moveTileTo(from, { i: tilesPerRow - index - 1, j: from.j });
-    if (direction === "Left") this.moveTileTo(from, { i: from.i, j: index });
-    if (direction === "Right") this.moveTileTo(from, { i: from.i, j: tilesPerRow - index - 1 });
+  moveTile(from: Tile, index: number, direction: Direction) {
+    if (direction === "Up") this.moveTileTo(from.pos, { i: index, j: from.pos.j });
+    if (direction === "Down") this.moveTileTo(from.pos, { i: tilesPerRow - index - 1, j: from.pos.j });
+    if (direction === "Left") this.moveTileTo(from.pos, { i: from.pos.i, j: index });
+    if (direction === "Right") this.moveTileTo(from.pos, { i: from.pos.i, j: tilesPerRow - index - 1 });
   }
 
   spawnTile() {
@@ -138,11 +138,11 @@ class Board {
         if (prevTile) {
           if (prevTile.value === tile.value) {
             this.removeTile(prevTile);
-            this.moveTile(tile.pos, i, direction);
+            this.moveTile(tile, i, direction);
             tile.setValue(tile.value * 2);
             prevTile = null;
           } else {
-            this.moveTile(prevTile.pos, i, direction);
+            this.moveTile(prevTile, i, direction);
             prevTile = tile;
           }
           i++;
@@ -154,7 +154,7 @@ class Board {
 
     if (prevTile) {
       prevTile.setValue(prevTile.value);
-      this.moveTile(prevTile.pos, i, direction);
+      this.moveTile(prevTile, i, direction);
     }
   }
 
