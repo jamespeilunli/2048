@@ -44,6 +44,8 @@ class Tile {
     this.element.style.left = `${boardMarginLeft + tileMargin + pos.j * (tileSize + tileMargin)}px`;
     this.element.style.top = `${boardMarginTop + tileMargin + pos.i * (tileSize + tileMargin)}px`;
     this.element.innerText = value.toString();
+    this.element.classList.add("fade-in");
+    this.element.classList.add("animated-move");
     document.getElementById("board")?.appendChild(this.element);
   }
 
