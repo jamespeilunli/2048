@@ -90,6 +90,7 @@ class Tile {
 class Board {
   board: (Tile | null)[][];
   moved: boolean = false; // have any tiles moved this turn?
+  score: number = 0;
 
   constructor() {
     this.board = Array(tilesPerRow).fill(null).map(() => Array(tilesPerRow).fill(null));
@@ -154,6 +155,7 @@ class Board {
             this.removeTile(prevTile);
             this.moveTile(tile, i, direction);
             tile.setValue(tile.value * 2);
+            this.score += tile.value;
             prevTile = null;
           } else {
             this.moveTile(prevTile, i, direction);
@@ -184,9 +186,14 @@ class Board {
     }
   }
 
+  displayScore() {
+    document.getElementById("score")!.textContent = `SCORE: ${this.score}`;
+  }
+
   tick(key: Direction) {
     this.moved = false;
     this.move(key);
+    this.displayScore();
     if (this.moved) this.spawnTile();
   }
 }
