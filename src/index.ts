@@ -39,10 +39,9 @@ class Tile {
 
     this.element = document.createElement("div");
     this.setValue(value);
+    this.moveTo(pos);
     this.element.classList.add("tile");
     this.element.style.backgroundColor = "black";
-    this.element.style.left = `${boardMarginLeft + tileMargin + pos.j * (tileSize + tileMargin)}px`;
-    this.element.style.top = `${boardMarginTop + tileMargin + pos.i * (tileSize + tileMargin)}px`;
     this.element.classList.add("fade-in");
     this.element.classList.add("animated-move");
     document.getElementById("board")?.appendChild(this.element);
@@ -62,8 +61,8 @@ class Tile {
 
   moveTo(pos: Pos) {
     this.pos = pos;
-    this.element.style.left = `${boardMarginLeft + tileMargin + pos.j * (tileSize + tileMargin)}px`;
-    this.element.style.top = `${boardMarginTop + tileMargin + pos.i * (tileSize + tileMargin)}px`;
+    this.element.style.left = `${tileMargin + pos.j * (tileSize + tileMargin)}px`;
+    this.element.style.top = `${tileMargin + pos.i * (tileSize + tileMargin)}px`;
   }
 
   setValue(newValue: number) {
