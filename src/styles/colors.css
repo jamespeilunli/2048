@@ -1,0 +1,13 @@
+/* light gradient of blue -> purple -> pink -> red */
+.text-2 { color: #6DA9D2; }
+.text-4 { color: #4A90C4; }
+.text-8 { color: #2E5A8A; }
+.text-16 { color: #5F4B8A; }
+.text-32 { color: #7E4A7B; }
+.text-64 { color: #9E4F7D; }
+.text-128 { color: #C54B8C; }
+.text-256 { color: #D84A7A; }
+.text-512 { color: #E87A8A; }
+.text-1024 { color: #FF8C94; }
+.text-2048 { color: #FF6F61; }
+.text-4096 { color: #D32F2F; }

@@ -38,12 +38,11 @@ class Tile {
     this.value = value;
 
     this.element = document.createElement("div");
+    this.setValue(value);
     this.element.classList.add("tile");
     this.element.style.backgroundColor = "black";
-    this.element.style.color = "pink";
     this.element.style.left = `${boardMarginLeft + tileMargin + pos.j * (tileSize + tileMargin)}px`;
     this.element.style.top = `${boardMarginTop + tileMargin + pos.i * (tileSize + tileMargin)}px`;
-    this.element.innerText = value.toString();
     this.element.classList.add("fade-in");
     this.element.classList.add("animated-move");
     document.getElementById("board")?.appendChild(this.element);
@@ -70,6 +69,22 @@ class Tile {
   setValue(newValue: number) {
     this.value = newValue;
     this.element.innerText = newValue.toString();
+
+    // correct font size for large values
+    if (newValue > 9999) {
+      this.element.style.fontSize = `${2 * tileFontSize / 3}px`;
+    } else if (newValue > 999) {
+      this.element.style.fontSize = `${4 * tileFontSize / 5}px`;
+    }
+
+    // remove old text color
+    const oldColors = Array.from(this.element.classList).find(className => className.startsWith('text-'));
+    if (oldColors) {
+      this.element.classList.remove(oldColors);
+    }
+
+    // set new text color
+    this.element.classList.add(`text-${newValue}`);
   }
 }
 
