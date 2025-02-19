@@ -89,25 +89,20 @@ class Tile {
 }
 
 class Board {
-  tiles: Tile[];
   board: (Tile | null)[][];
   moved: boolean = false; // have any tiles moved this turn?
 
   constructor() {
-    this.tiles = [];
     this.board = Array(tilesPerRow).fill(null).map(() => Array(tilesPerRow).fill(null));
   }
 
   createTile(value: number, pos: Pos) {
     this.board[pos.i][pos.j] = new Tile(value, pos);
-    this.tiles.push(this.board[pos.i][pos.j]!);
   }
 
   removeTile(tile: Tile) {
     this.board[tile.pos.i][tile.pos.j] = null;
     tile.destroy();
-
-    this.tiles.splice(this.tiles.indexOf(tile), 1);
   }
 
   moveTileTo(from: Pos, to: Pos) {
@@ -115,15 +110,10 @@ class Board {
 
     this.moved = true;
 
+    this.board[from.i][from.j]?.moveTo(to);
+
     this.board[to.i][to.j] = this.board[from.i][from.j];
     this.board[from.i][from.j] = null;
-
-    this.tiles.forEach((tile) => {
-      if (posesEqual(tile.pos, from)) {
-        tile.moveTo(to);
-        return;
-      }
-    })
   }
 
   moveTile(from: Tile, index: number, direction: Direction) {
