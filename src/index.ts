@@ -137,7 +137,7 @@ class Board {
       alert("You Lose!");
     } else {
       const newPos = emptyTiles[randint(0, emptyTiles.length - 1)];
-      const newValue = randint(1, 100) > 20 ? 2 : 4;
+      const newValue = randint(1, 100) > 10 ? 2 : 4;
 
       this.createTile(newValue, newPos);
     }
