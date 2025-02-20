@@ -20,7 +20,7 @@ function randint(min: number, max: number) {
 type Pos = {
   i: number,
   j: number,
-}
+};
 
 function posesEqual(a: Pos, b: Pos) {
   return a.i === b.i && a.j === b.j;
@@ -56,7 +56,7 @@ class Tile {
 
     this.element.addEventListener("animationend", () => {
       this.element.remove();
-    })
+    });
   }
 
   moveTo(pos: Pos) {
@@ -91,6 +91,7 @@ class Board {
   board: (Tile | null)[][];
   moved: boolean = false; // have any tiles moved this turn?
   score: number = 0;
+  highestTile: Tile | null = null;
 
   constructor() {
     this.board = Array(tilesPerRow).fill(null).map(() => Array(tilesPerRow).fill(null));
@@ -129,7 +130,7 @@ class Board {
     for (let i = 0; i < tilesPerRow; i++) {
       for (let j = 0; j < tilesPerRow; j++) {
         if (!this.board[i][j]) {
-          emptyTiles.push({ i, j })
+          emptyTiles.push({ i, j });
         }
       }
     }
@@ -155,8 +156,9 @@ class Board {
             this.removeTile(prevTile);
             this.moveTile(tile, i, direction);
             tile.setValue(tile.value * 2);
-            this.score += tile.value;
             prevTile = null;
+            this.score += tile.value;
+            this.updateHighestTile(tile);
           } else {
             this.moveTile(prevTile, i, direction);
             prevTile = tile;
@@ -190,6 +192,20 @@ class Board {
     document.getElementById("score")!.textContent = `SCORE: ${this.score}`;
   }
 
+  updateHighestTile(newTile: Tile) {
+    if (this.highestTile) {
+      if (newTile.value > this.highestTile.value) {
+        this.highestTile = newTile;
+      }
+    } else {
+      this.highestTile = newTile;
+    }
+
+    console.log(this.highestTile, newTile);
+    document.getElementById("full-window")!.style.background =
+      getComputedStyle(this.highestTile.element).getPropertyValue("color");
+  }
+
   tick(key: Direction) {
     this.moved = false;
     this.move(key);
@@ -206,4 +222,4 @@ window.addEventListener("keydown", (ev) => {
   if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
     board.tick(ev.key.slice(5) as Direction);
   }
-})
+});
