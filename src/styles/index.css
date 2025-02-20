@@ -28,6 +28,7 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
+  background-color: #6da9d2;
   transition: background-color 0.5s ease-in-out;
 }
 
