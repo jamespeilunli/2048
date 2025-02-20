@@ -122,9 +122,7 @@ class Board {
       }
     }
 
-    if (emptyTiles.length === 0) {
-      alert("You Lose!");
-    } else {
+    if (emptyTiles.length !== 0) {
       const newPos = emptyTiles[randint(0, emptyTiles.length - 1)];
       const newValue = randint(1, 100) > 10 ? 2 : 4;
 
@@ -192,11 +190,37 @@ class Board {
       getComputedStyle(this.highestTile.element).getPropertyValue("color");
   }
 
+  lost() {
+    // if there are empty tiles the game is not lost
+    for (let i = 0; i < tilesPerRow; i++) {
+      for (let j = 0; j < tilesPerRow; j++) {
+        if (!this.board[i][j]) return false;
+      }
+    }
+
+    // if there horizontally adjacent identical value tiles the game is not lost
+    for (let i = 0; i < tilesPerRow; i++) {
+      for (let j = 0; j < tilesPerRow - 1; j++) {
+        if (this.board[i][j]?.value === this.board[i][j + 1]?.value) return false;
+      }
+    }
+
+    // if there vertically adjacent identical value tiles the game is not lost
+    for (let i = 0; i < tilesPerRow - 1; i++) {
+      for (let j = 0; j < tilesPerRow; j++) {
+        if (this.board[i][j]?.value === this.board[i + 1][j]?.value) return false;
+      }
+    }
+
+    return true;
+  }
+
   tick(key: Direction) {
     this.moved = false;
     this.move(key);
     this.displayScore();
     if (this.moved) this.spawnTile();
+    if (this.lost()) alert("You Lose!");
   }
 }
 
