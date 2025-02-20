@@ -1,13 +1,15 @@
 /* light gradient of blue -> purple -> pink -> red */
-.text-2 { color: #6DA9D2; }
-.text-4 { color: #4A90C4; }
-.text-8 { color: #2E5A8A; }
-.text-16 { color: #5F4B8A; }
-.text-32 { color: #7E4A7B; }
-.text-64 { color: #9E4F7D; }
-.text-128 { color: #C54B8C; }
-.text-256 { color: #D84A7A; }
-.text-512 { color: #E87A8A; }
-.text-1024 { color: #FF8C94; }
-.text-2048 { color: #FF6F61; }
-.text-4096 { color: #D32F2F; }
+:root {
+  --text-2: #6da9d2;
+  --text-4: #4a90c4;
+  --text-8: #2e5a8a;
+  --text-16: #5f4b8a;
+  --text-32: #7e4a7b;
+  --text-64: #9e4f7d;
+  --text-128: #c54b8c;
+  --text-256: #d84a7a;
+  --text-512: #e87a8a;
+  --text-1024: #ff8c94;
+  --text-2048: #ff6f61;
+  --text-4096: #d32f2f;
+}

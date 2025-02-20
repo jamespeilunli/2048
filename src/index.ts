@@ -5,10 +5,6 @@ const tileSize = parseInt(styles.getPropertyValue('--tile-size'));
 const tileMargin = parseInt(styles.getPropertyValue('--tile-margin'));
 const tileFontSize = parseInt(styles.getPropertyValue('--tile-font-size'));
 
-const boardBoundingRect = document.getElementById("board")!.getBoundingClientRect();
-const boardMarginTop = boardBoundingRect.top + window.scrollY;
-const boardMarginLeft = boardBoundingRect.left + window.scrollX;
-
 const getColumn = (matrix: any[][], column: number) => matrix.map((row) => row[column]);
 
 type Pos = {
@@ -72,14 +68,8 @@ class Tile {
       this.element.style.fontSize = `${4 * tileFontSize / 5}px`;
     }
 
-    // remove old text color
-    const oldColors = Array.from(this.element.classList).find(className => className.startsWith('text-'));
-    if (oldColors) {
-      this.element.classList.remove(oldColors);
-    }
-
     // set new text color
-    this.element.classList.add(`text-${newValue}`);
+    this.element.style.color = styles.getPropertyValue(`--text-${newValue}`);
   }
 }
 
@@ -95,6 +85,7 @@ class Board {
 
   createTile(value: number, pos: Pos) {
     this.board[pos.i][pos.j] = new Tile(value, pos);
+    this.updateHighestTile(this.board[pos.i][pos.j]!);
   }
 
   removeTile(tile: Tile) {
