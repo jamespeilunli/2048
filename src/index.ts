@@ -11,22 +11,18 @@ const boardMarginLeft = boardBoundingRect.left + window.scrollX;
 
 const getColumn = (matrix: any[][], column: number) => matrix.map((row) => row[column]);
 
-function randint(min: number, max: number) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min);
-}
-
 type Pos = {
   i: number,
   j: number,
 };
 
-function posesEqual(a: Pos, b: Pos) {
-  return a.i === b.i && a.j === b.j;
-}
-
 type Direction = "Up" | "Down" | "Left" | "Right";
+
+function randint(min: number, max: number) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min);
+}
 
 class Tile {
   pos: Pos;
@@ -107,7 +103,7 @@ class Board {
   }
 
   moveTileTo(from: Pos, to: Pos) {
-    if (posesEqual(from, to)) return;
+    if (from.i === to.i && from.j === to.j) return; // can't do (from === to) directly
 
     this.moved = true;
 
@@ -201,7 +197,6 @@ class Board {
       this.highestTile = newTile;
     }
 
-    console.log(this.highestTile, newTile);
     document.getElementById("full-window")!.style.background =
       getComputedStyle(this.highestTile.element).getPropertyValue("color");
   }
