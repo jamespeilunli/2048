@@ -57,10 +57,15 @@ h1 {
   position: relative;
   width: var(--board-size);
   margin: 5px 0;
+  font-weight: bold;
 }
 
 #score {
   float: left;
+}
+
+#high-score {
+  float: right;
 }
 
 #board-container {

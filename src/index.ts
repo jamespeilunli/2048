@@ -77,6 +77,7 @@ class Game {
   board: (Tile | null)[][];
   moved: boolean = false; // have any tiles moved this turn?
   score: number = 0;
+  highScore: number = 0;
   highestTile: Tile | null = null;
   gameOver: boolean = false;
 
@@ -178,6 +179,12 @@ class Game {
     document.getElementById("score")!.textContent = `SCORE: ${this.score}`;
   }
 
+  updateHighScore() {
+    if (this.score > this.highScore) localStorage.setItem("high-score", this.score.toString());
+    this.highScore = parseInt(localStorage.getItem("high-score") ?? "0");
+    document.getElementById("high-score")!.textContent = `HIGH SCORE: ${this.highScore}`;
+  }
+
   updateHighestTile(newTile: Tile) {
     if (this.highestTile) {
       if (newTile.value > this.highestTile.value) {
@@ -220,12 +227,14 @@ class Game {
     this.moved = false;
     this.move(key);
     this.displayScore();
+    this.updateHighScore();
     if (this.moved) this.spawnTile();
     if (this.lost()) this.end();
   }
 
   run() {
     game.spawnTile();
+    this.updateHighScore();
 
     window.addEventListener("keydown", (ev) => {
       if (!this.gameOver && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
@@ -239,6 +248,10 @@ class Game {
 
     document.getElementById("game-over")!.style.display = "flex";
     document.getElementById("game-over")!.style.backgroundColor = "#00000077"; // half transparent black
+
+    document.getElementById("game-summary")!.innerHTML =
+      `<p>SCORE: ${this.score}</p>
+       <p>HIGH SCORE: ${this.highScore}</p>`;
   }
 }
 
