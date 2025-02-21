@@ -7,8 +7,12 @@
 }
 
 body {
-  font-family: sans-serif;
+  font-family: "Open Sans", Roboto, Arial, sans-serif;
   text-align: center;
+}
+
+span {
+  font-size: large;
 }
 
 h1 {
