@@ -1,15 +1,15 @@
 /* light gradient of blue -> purple -> pink -> red */
 :root {
   --text-2: #6da9d2;
-  --text-4: #4a90c4;
-  --text-8: #2e5a8a;
-  --text-16: #5f4b8a;
-  --text-32: #7e4a7b;
+  --text-4: #3e92d0;
+  --text-8: #2862a0;
+  --text-16: #5e59a3;
+  --text-32: #86538B;
   --text-64: #9e4f7d;
   --text-128: #c54b8c;
   --text-256: #d84a7a;
-  --text-512: #e87a8a;
+  --text-512: #F0738A;
   --text-1024: #ff8c94;
   --text-2048: #ff6f61;
-  --text-4096: #d32f2f;
+  --text-4096: #de2e41;
 }
