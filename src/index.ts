@@ -73,11 +73,12 @@ class Tile {
   }
 }
 
-class Board {
+class Game {
   board: (Tile | null)[][];
   moved: boolean = false; // have any tiles moved this turn?
   score: number = 0;
   highestTile: Tile | null = null;
+  gameOver: boolean = false;
 
   constructor() {
     this.board = Array(tilesPerRow).fill(null).map(() => Array(tilesPerRow).fill(null));
@@ -220,16 +221,26 @@ class Board {
     this.move(key);
     this.displayScore();
     if (this.moved) this.spawnTile();
-    if (this.lost()) alert("You Lose!");
+    if (this.lost()) this.end();
+  }
+
+  run() {
+    game.spawnTile();
+
+    window.addEventListener("keydown", (ev) => {
+      if (!this.gameOver && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
+        game.tick(ev.key.slice(5) as Direction);
+      }
+    });
+  }
+
+  end() {
+    this.gameOver = true;
+
+    document.getElementById("game-over")!.style.display = "flex";
+    document.getElementById("game-over")!.style.backgroundColor = "#00000077"; // half transparent black
   }
 }
 
-const board = new Board();
-
-board.spawnTile();
-
-window.addEventListener("keydown", (ev) => {
-  if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
-    board.tick(ev.key.slice(5) as Direction);
-  }
-});
+const game = new Game();
+game.run();

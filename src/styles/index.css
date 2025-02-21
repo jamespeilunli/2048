@@ -36,6 +36,23 @@ h1 {
   transition: background-color 0.5s ease-in-out;
 }
 
+#game-over {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  flex-direction: column;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: white;
+}
+
+#game-over * {
+  position: relative;
+}
+
 #stats {
   position: relative;
   width: var(--board-size);
