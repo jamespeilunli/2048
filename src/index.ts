@@ -33,7 +33,6 @@ class Tile {
     this.setValue(value);
     this.moveTo(pos);
     this.element.classList.add("tile");
-    this.element.style.backgroundColor = "black";
     this.element.classList.add("fade-in");
     this.element.classList.add("animated-move");
     document.getElementById("board")?.appendChild(this.element);
@@ -68,8 +67,9 @@ class Tile {
       this.element.style.fontSize = `${4 * tileFontSize / 5}px`;
     }
 
-    // set new text color
+    // set new tile color
     this.element.style.color = styles.getPropertyValue(`--text-${newValue}`);
+    this.element.style.backgroundColor = styles.getPropertyValue(`--bg-${newValue}`);
   }
 }
 
@@ -194,8 +194,7 @@ class Game {
       this.highestTile = newTile;
     }
 
-    document.getElementById("full-window")!.style.background =
-      getComputedStyle(this.highestTile.element).getPropertyValue("color");
+    dynamicColors.updateColors(getComputedStyle(this.highestTile.element));
   }
 
   lost() {
@@ -233,12 +232,12 @@ class Game {
   }
 
   run() {
-    game.spawnTile();
+    this.spawnTile();
     this.updateHighScore();
 
     window.addEventListener("keydown", (ev) => {
       if (!this.gameOver && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
-        game.tick(ev.key.slice(5) as Direction);
+        this.tick(ev.key.slice(5) as Direction);
       }
     });
   }
@@ -254,6 +253,9 @@ class Game {
        <p>HIGH SCORE: ${this.highScore}</p>`;
   }
 }
+
+const dynamicColors = new DynamicColors();
+dynamicColors.init();
 
 const game = new Game();
 game.run();
