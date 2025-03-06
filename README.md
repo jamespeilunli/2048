@@ -8,3 +8,8 @@ npm install
 npx tsc --watch
 ```
 Then go to `public/index.html` in the browser.
+
+## Customizable Colors
+
+Modify `src/styles/colors.css` to customize colors.
+
