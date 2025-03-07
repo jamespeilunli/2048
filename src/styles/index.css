@@ -20,11 +20,16 @@
   }
 }
 
+html {
+  overscroll-behavior: none;
+}
+
 body {
   font-family: "Open Sans", Roboto, Arial, sans-serif;
   color: var(--text);
   background-color: var(--text-2);
   font-size: font-size;
+  overscroll-behavior: none;
 }
 
 h1 {
