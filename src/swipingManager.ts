@@ -5,17 +5,19 @@ class SwipingManager {
   endY: number = 0;
   threshold: number;
   onSwipe: (direction: Direction) => void;
+  swiped: boolean = false;
 
   constructor(onSwipe: (direction: Direction) => void, threshold = 20) {
     this.onSwipe = onSwipe;
     this.threshold = threshold;
 
     document.addEventListener('touchstart', e => {
+      this.swiped = false;
       this.startX = e.changedTouches[0].screenX;
       this.startY = e.changedTouches[0].screenY;
     });
 
-    document.addEventListener('touchend', e => {
+    document.addEventListener('touchmove', e => {
       this.endX = e.changedTouches[0].screenX;
       this.endY = e.changedTouches[0].screenY;
       this.updateDirection();
@@ -23,6 +25,8 @@ class SwipingManager {
   }
 
   updateDirection() {
+    if (this.swiped) return;
+
     let dx = this.endX - this.startX;
     let dy = this.endY - this.startY;
 
@@ -38,5 +42,6 @@ class SwipingManager {
     }
 
     this.onSwipe(direction);
+    this.swiped = true;
   }
 }
