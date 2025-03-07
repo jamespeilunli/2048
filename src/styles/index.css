@@ -1,19 +1,30 @@
-:root {
-  --tiles-per-row: 4;
-  --tile-size: 100px;
-  --tile-margin: 10px;
-  --tile-font-size: 50px;
-  --board-size: calc(var(--tile-margin) + var(--tiles-per-row) * (var(--tile-margin) + var(--tile-size)));
+@media screen and (max-width: 500px) {
+  :root {
+    --tiles-per-row: 4;
+    --tile-size: 22vw;
+    --tile-margin: 2vw;
+    --tile-font-size: calc(var(--tile-size) / 2);
+    --board-size: calc(var(--tile-margin) + var(--tiles-per-row) * (var(--tile-margin) + var(--tile-size)));
+    --font-size: 20px;
+  }
+}
+
+@media screen and (min-width: 501px) {
+  :root {
+    --tiles-per-row: 4;
+    --tile-size: 100px;
+    --tile-margin: 10px;
+    --tile-font-size: calc(var(--tile-size) / 2);
+    --board-size: calc(var(--tile-margin) + var(--tiles-per-row) * (var(--tile-margin) + var(--tile-size)));
+    --font-size: large;
+  }
 }
 
 body {
   font-family: "Open Sans", Roboto, Arial, sans-serif;
   color: var(--text);
   background-color: var(--text-2);
-}
-
-span {
-  font-size: large;
+  font-size: font-size;
 }
 
 h1 {
