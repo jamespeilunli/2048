@@ -1,10 +1,11 @@
 "use strict";
-// note: most of the args inside parseInt are strings with "px" suffix
 const styles = getComputedStyle(document.documentElement);
-const tilesPerRow = parseInt(styles.getPropertyValue('--tiles-per-row'));
-const tileSize = parseInt(styles.getPropertyValue('--tile-size'));
-const tileMargin = parseInt(styles.getPropertyValue('--tile-margin'));
-const tileFontSize = parseInt(styles.getPropertyValue('--tile-font-size'));
+const [tilesPerRow, tileSize, tileMargin, tileFontSize] = [
+    styles.getPropertyValue("--tiles-per-row"),
+    styles.getPropertyValue("--tile-size"),
+    styles.getPropertyValue("--tile-margin"),
+    styles.getPropertyValue("--tile-font-size")
+].map((value) => value.endsWith("vw") ? parseInt(value) / 100 * window.innerWidth : parseInt(value));
 const getColumn = (matrix, column) => matrix.map((row) => row[column]);
 function randint(min, max) {
     min = Math.ceil(min);
@@ -34,9 +35,12 @@ class Tile {
         });
     }
     moveTo(pos) {
+        console.log(pos);
+        console.log(tileMargin, tileSize + tileMargin);
         this.pos = pos;
         this.element.style.left = `${tileMargin + pos.j * (tileSize + tileMargin)}px`;
         this.element.style.top = `${tileMargin + pos.i * (tileSize + tileMargin)}px`;
+        console.log(this.element.style);
     }
     setValue(newValue) {
         this.value = newValue;
@@ -60,6 +64,7 @@ class Game {
         this.highScore = 0;
         this.highestTile = null;
         this.gameOver = false;
+        this.swipingManager = null;
         this.board = Array(tilesPerRow).fill(null).map(() => Array(tilesPerRow).fill(null));
     }
     createTile(value, pos) {
@@ -212,6 +217,7 @@ class Game {
                 this.tick(ev.key.slice(5));
             }
         });
+        this.swipingManager = new SwipingManager((direction) => this.tick(direction));
     }
     end() {
         this.gameOver = true;
