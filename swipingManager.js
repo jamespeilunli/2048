@@ -5,19 +5,23 @@ class SwipingManager {
         this.startY = 0;
         this.endX = 0;
         this.endY = 0;
+        this.swiped = false;
         this.onSwipe = onSwipe;
         this.threshold = threshold;
         document.addEventListener('touchstart', e => {
+            this.swiped = false;
             this.startX = e.changedTouches[0].screenX;
             this.startY = e.changedTouches[0].screenY;
         });
-        document.addEventListener('touchend', e => {
+        document.addEventListener('touchmove', e => {
             this.endX = e.changedTouches[0].screenX;
             this.endY = e.changedTouches[0].screenY;
             this.updateDirection();
         });
     }
     updateDirection() {
+        if (this.swiped)
+            return;
         let dx = this.endX - this.startX;
         let dy = this.endY - this.startY;
         if (Math.abs(dx) < this.threshold && Math.abs(dy) < this.threshold)
@@ -36,5 +40,6 @@ class SwipingManager {
                 direction = "Up";
         }
         this.onSwipe(direction);
+        this.swiped = true;
     }
 }
