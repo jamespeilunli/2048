@@ -5,9 +5,9 @@
 Run:
 ```bash
 npm install
-npx tsc --watch
+npm run build
 ```
-Then go to `public/index.html` in the browser.
+Then go to `dist/index.html` in the browser.
 
 ## Customizable Colors
 
