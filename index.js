@@ -35,12 +35,9 @@ class Tile {
         });
     }
     moveTo(pos) {
-        console.log(pos);
-        console.log(tileMargin, tileSize + tileMargin);
         this.pos = pos;
         this.element.style.left = `${tileMargin + pos.j * (tileSize + tileMargin)}px`;
         this.element.style.top = `${tileMargin + pos.i * (tileSize + tileMargin)}px`;
-        console.log(this.element.style);
     }
     setValue(newValue) {
         this.value = newValue;
