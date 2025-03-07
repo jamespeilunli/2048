@@ -88,10 +88,12 @@ h1 {
 
 #score {
   float: left;
+  margin-left: 5px;
 }
 
 #high-score {
   float: right;
+  margin-right: 5px;
 }
 
 #board-container {
