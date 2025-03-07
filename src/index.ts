@@ -1,9 +1,12 @@
-// note: most of the args inside parseInt are strings with "px" suffix
 const styles = getComputedStyle(document.documentElement);
-const tilesPerRow = parseInt(styles.getPropertyValue('--tiles-per-row'));
-const tileSize = parseInt(styles.getPropertyValue('--tile-size'));
-const tileMargin = parseInt(styles.getPropertyValue('--tile-margin'));
-const tileFontSize = parseInt(styles.getPropertyValue('--tile-font-size'));
+
+const [tilesPerRow, tileSize, tileMargin, tileFontSize] = [
+  styles.getPropertyValue("--tiles-per-row"),
+  styles.getPropertyValue("--tile-size"),
+  styles.getPropertyValue("--tile-margin"),
+  styles.getPropertyValue("--tile-font-size")].map((value) =>
+    value.endsWith("vw") ? parseInt(value) / 100 * window.innerWidth : parseInt(value)
+  )
 
 const getColumn = (matrix: any[][], column: number) => matrix.map((row) => row[column]);
 
@@ -80,6 +83,7 @@ class Game {
   highScore: number = 0;
   highestTile: Tile | null = null;
   gameOver: boolean = false;
+  swipingManager: SwipingManager | null = null;
 
   constructor() {
     this.board = Array(tilesPerRow).fill(null).map(() => Array(tilesPerRow).fill(null));
@@ -240,6 +244,8 @@ class Game {
         this.tick(ev.key.slice(5) as Direction);
       }
     });
+
+    this.swipingManager = new SwipingManager((direction: Direction) => this.tick(direction));
   }
 
   end() {
