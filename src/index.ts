@@ -246,7 +246,7 @@ class Game {
     this.gameOver = true;
 
     document.getElementById("game-over")!.style.display = "flex";
-    document.getElementById("game-over")!.style.backgroundColor = "#00000077"; // half transparent black
+    document.getElementById("game-over")!.style.backgroundColor = "rgba(0, 0, 0, 0.65)";
 
     document.getElementById("game-summary")!.innerHTML =
       `<p>SCORE: ${this.score}</p>
