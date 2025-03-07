@@ -13,9 +13,6 @@ class SwipingManager {
     document.addEventListener('touchstart', e => {
       this.startX = e.changedTouches[0].screenX;
       this.startY = e.changedTouches[0].screenY;
-      if ((e.target as HTMLElement).nodeName !== 'INPUT') {
-        e.preventDefault();
-      }
     });
 
     document.addEventListener('touchend', e => {

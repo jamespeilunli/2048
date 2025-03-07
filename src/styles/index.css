@@ -82,7 +82,7 @@ h1 {
 #stats {
   position: relative;
   width: var(--board-size);
-  margin: 5px 0;
+  margin: 5px;
   font-weight: bold;
 }
 
