@@ -80,6 +80,7 @@ class Game {
   highScore: number = 0;
   highestTile: Tile | null = null;
   gameOver: boolean = false;
+  swipingManager: SwipingManager | null = null;
 
   constructor() {
     this.board = Array(tilesPerRow).fill(null).map(() => Array(tilesPerRow).fill(null));
@@ -240,6 +241,8 @@ class Game {
         this.tick(ev.key.slice(5) as Direction);
       }
     });
+
+    this.swipingManager = new SwipingManager((direction: Direction) => this.tick(direction));
   }
 
   end() {
