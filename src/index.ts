@@ -245,8 +245,14 @@ class Game {
   end() {
     this.gameOver = true;
 
-    document.getElementById("game-over")!.style.display = "flex";
-    document.getElementById("game-over")!.style.backgroundColor = "rgba(0, 0, 0, 0.65)";
+    const gameOverElement = document.getElementById("game-over")!;
+    gameOverElement.style.display = "flex";
+    gameOverElement.style.backgroundColor = "rgba(0, 0, 0, 0.65)";
+    const translation = 50;
+    const margin = 10;
+    gameOverElement.style.left = 
+      `${-gameOverElement.offsetWidth - margin + translation}px`;
+    document.getElementById("board")!.style.left = `${translation}px`;
 
     document.getElementById("game-summary")!.innerHTML =
       `<p>SCORE: ${this.score}</p>

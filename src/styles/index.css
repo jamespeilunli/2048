@@ -36,19 +36,6 @@ h1 {
   background-color: var(--window-bg);
 }
 
-#game-over {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  flex-direction: column;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  color: white;
-}
-
 #game-over * {
   position: relative;
   margin: 10px;
@@ -66,7 +53,7 @@ h1 {
 #stats {
   position: relative;
   width: var(--board-size);
-  margin: 5px 0;
+  margin: calc(var(--board-size) + 5px) 0;
   font-weight: bold;
 }
 
@@ -79,15 +66,35 @@ h1 {
 }
 
 #board-container {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+#game-over {
+  position: absolute;
+  display: none;
+  width: 250px;
+  height: var(--board-size);
+  background-color: var(--board-bg);
+  border-radius: 10px;
+  user-select: none;
+  flex-direction: column;
+}
+
+#game-over * {
   position: relative;
 }
 
 #board {
+  position: relative;
   width: var(--board-size);
   height: var(--board-size);
   background-color: var(--board-bg);
   border-radius: 10px;
   user-select: none;
+  transition: left 0.3s ease-in-out, top 0.3s ease-in-out;
+  left: 0px;
 }
 
 .tile {

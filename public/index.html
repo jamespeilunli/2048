@@ -12,22 +12,21 @@
     <div id="full-window">
       <h1>2048</h1>
       <div id="board-container">
-        <div id="board"></div>
+        <div id="game-over" class="fade-in">
+          <h2>Game Over</h2>
+          <div id="game-summary"></div>
+          <div class="links">
+            <a href="https://jamespeilunli.github.io/2048">Play Again</a>
+            <a href="https://github.com/jamespeilunli/2048">GitHub</a>
+          </div>
+        </div>
+        <div id="board">
+          <div id="stats">
+            <span id="score">SCORE: 0</span>
+            <span id="high-score">HIGH SCORE: 0</span>
+          </div>
+        </div>
       </div>
-      <div id="stats">
-        <span id="score">SCORE: 0</span>
-        <span id="high-score">HIGH SCORE: 0</span>
-      </div>
-    </div>
-    <div id="game-over">
-      <h1>Game Over</h1>
-      <div id="game-summary"></div>
-     <div class="links">
-        <a href="https://jamespeilunli.github.io/2048">Play Again</a>
-        <a href="https://github.com/jamespeilunli/2048">GitHub</a>
-      </div>
-    </div>
-
     <script src="dynamicColors.js"></script>
     <script src="index.js"></script>
   </body>
