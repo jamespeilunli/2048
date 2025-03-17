@@ -210,8 +210,20 @@ class Game {
         this.spawnTile();
         this.updateHighScore();
         window.addEventListener("keydown", (ev) => {
-            if (!this.gameOver && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
-                this.tick(ev.key.slice(5));
+            if (!this.gameOver) {
+                console.log(ev.key);
+                if (["ArrowUp", "w"].includes(ev.key)) {
+                    this.tick("Up");
+                }
+                if (["ArrowLeft", "a"].includes(ev.key)) {
+                    this.tick("Left");
+                }
+                if (["ArrowDown", "s"].includes(ev.key)) {
+                    this.tick("Down");
+                }
+                if (["ArrowRight", "d"].includes(ev.key)) {
+                    this.tick("Right");
+                }
             }
         });
         this.swipingManager = new SwipingManager((direction) => this.tick(direction));
