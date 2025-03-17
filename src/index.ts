@@ -240,8 +240,20 @@ class Game {
     this.updateHighScore();
 
     window.addEventListener("keydown", (ev) => {
-      if (!this.gameOver && ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(ev.key)) {
-        this.tick(ev.key.slice(5) as Direction);
+      if (!this.gameOver) {
+        console.log(ev.key);
+        if (["ArrowUp", "w"].includes(ev.key)) {
+          this.tick("Up" as Direction);
+        }
+        if (["ArrowLeft", "a"].includes(ev.key)) {
+          this.tick("Left" as Direction);
+        }
+        if (["ArrowDown", "s"].includes(ev.key)) {
+          this.tick("Down" as Direction);
+        }
+        if (["ArrowRight", "d"].includes(ev.key)) {
+          this.tick("Right" as Direction);
+        }
       }
     });
 
