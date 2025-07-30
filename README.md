@@ -13,4 +13,4 @@ Then go to `dist/index.html` in the browser.
 
 ## Customizable Colors
 
-Modify `src/styles/colors.css` to customize colors.
+Modify `src/styles/defaultTheme.json` to customize colors.
