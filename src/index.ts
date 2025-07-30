@@ -249,7 +249,6 @@ class Game {
 
     window.addEventListener("keydown", (ev) => {
       if (!this.gameOver) {
-        console.log(ev.key);
         if (["ArrowUp", "w"].includes(ev.key)) {
           this.tick("Up" as Direction);
         }
