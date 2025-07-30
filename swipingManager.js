@@ -1,19 +1,20 @@
-"use strict";
-class SwipingManager {
+export class SwipingManager {
+    startX = 0;
+    startY = 0;
+    endX = 0;
+    endY = 0;
+    threshold;
+    onSwipe;
+    swiped = false;
     constructor(onSwipe, threshold = 20) {
-        this.startX = 0;
-        this.startY = 0;
-        this.endX = 0;
-        this.endY = 0;
-        this.swiped = false;
         this.onSwipe = onSwipe;
         this.threshold = threshold;
-        document.addEventListener('touchstart', e => {
+        document.addEventListener("touchstart", (e) => {
             this.swiped = false;
             this.startX = e.changedTouches[0].screenX;
             this.startY = e.changedTouches[0].screenY;
         });
-        document.addEventListener('touchmove', e => {
+        document.addEventListener("touchmove", (e) => {
             this.endX = e.changedTouches[0].screenX;
             this.endY = e.changedTouches[0].screenY;
             this.updateDirection();

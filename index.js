@@ -1,11 +1,13 @@
-"use strict";
+import { themeManager } from "./themeManager.js";
+import { SwipingManager } from "./swipingManager.js";
+import { DynamicColors } from "./dynamicColors.js";
 const styles = getComputedStyle(document.documentElement);
 const [tilesPerRow, tileSize, tileMargin, tileFontSize] = [
     styles.getPropertyValue("--tiles-per-row"),
     styles.getPropertyValue("--tile-size"),
     styles.getPropertyValue("--tile-margin"),
-    styles.getPropertyValue("--tile-font-size")
-].map((value) => value.endsWith("vw") ? parseInt(value) / 100 * window.innerWidth : parseInt(value));
+    styles.getPropertyValue("--tile-font-size"),
+].map((value) => (value.endsWith("vw") ? (parseInt(value) / 100) * window.innerWidth : parseInt(value)));
 const getColumn = (matrix, column) => matrix.map((row) => row[column]);
 function randint(min, max) {
     min = Math.ceil(min);
@@ -13,8 +15,10 @@ function randint(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 class Tile {
+    pos;
+    value;
+    element;
     constructor(value, pos) {
-        var _a;
         this.pos = pos;
         this.value = value;
         this.element = document.createElement("div");
@@ -23,7 +27,7 @@ class Tile {
         this.element.classList.add("tile");
         this.element.classList.add("fade-in");
         this.element.classList.add("animated-move");
-        (_a = document.getElementById("board")) === null || _a === void 0 ? void 0 : _a.appendChild(this.element);
+        document.getElementById("board")?.appendChild(this.element);
     }
     destroy() {
         this.element.classList.remove("fade-in");
@@ -44,25 +48,28 @@ class Tile {
         this.element.innerText = newValue.toString();
         // correct font size for large values
         if (newValue > 9999) {
-            this.element.style.fontSize = `${2 * tileFontSize / 3}px`;
+            this.element.style.fontSize = `${(2 * tileFontSize) / 3}px`;
         }
         else if (newValue > 999) {
-            this.element.style.fontSize = `${4 * tileFontSize / 5}px`;
+            this.element.style.fontSize = `${(4 * tileFontSize) / 5}px`;
         }
         // set new tile color
-        this.element.style.color = styles.getPropertyValue(`--text-${newValue}`);
-        this.element.style.backgroundColor = styles.getPropertyValue(`--bg-${newValue}`);
+        this.element.style.color = themeManager.getTileTextColor(newValue);
+        this.element.style.backgroundColor = themeManager.getTileBackgroundColor(newValue);
     }
 }
 class Game {
+    board;
+    moved = false; // have any tiles moved this turn?
+    score = 0;
+    highScore = 0;
+    highestTile = null;
+    gameOver = false;
+    swipingManager = null;
     constructor() {
-        this.moved = false; // have any tiles moved this turn?
-        this.score = 0;
-        this.highScore = 0;
-        this.highestTile = null;
-        this.gameOver = false;
-        this.swipingManager = null;
-        this.board = Array(tilesPerRow).fill(null).map(() => Array(tilesPerRow).fill(null));
+        this.board = Array(tilesPerRow)
+            .fill(null)
+            .map(() => Array(tilesPerRow).fill(null));
     }
     createTile(value, pos) {
         this.board[pos.i][pos.j] = new Tile(value, pos);
@@ -73,11 +80,10 @@ class Game {
         tile.destroy();
     }
     moveTileTo(from, to) {
-        var _a;
         if (from.i === to.i && from.j === to.j)
             return; // can't do (from === to) directly
         this.moved = true;
-        (_a = this.board[from.i][from.j]) === null || _a === void 0 ? void 0 : _a.moveTo(to);
+        this.board[from.i][from.j]?.moveTo(to);
         this.board[to.i][to.j] = this.board[from.i][from.j];
         this.board[from.i][from.j] = null;
     }
@@ -154,10 +160,9 @@ class Game {
         document.getElementById("score").textContent = `SCORE: ${this.score}`;
     }
     updateHighScore() {
-        var _a;
         if (this.score > this.highScore)
             localStorage.setItem("high-score", this.score.toString());
-        this.highScore = parseInt((_a = localStorage.getItem("high-score")) !== null && _a !== void 0 ? _a : "0");
+        this.highScore = parseInt(localStorage.getItem("high-score") ?? "0");
         document.getElementById("high-score").textContent = `HIGH SCORE: ${this.highScore}`;
     }
     updateHighestTile(newTile) {
@@ -172,7 +177,6 @@ class Game {
         dynamicColors.updateColors(getComputedStyle(this.highestTile.element));
     }
     lost() {
-        var _a, _b, _c, _d;
         // if there are empty tiles the game is not lost
         for (let i = 0; i < tilesPerRow; i++) {
             for (let j = 0; j < tilesPerRow; j++) {
@@ -183,14 +187,14 @@ class Game {
         // if there horizontally adjacent identical value tiles the game is not lost
         for (let i = 0; i < tilesPerRow; i++) {
             for (let j = 0; j < tilesPerRow - 1; j++) {
-                if (((_a = this.board[i][j]) === null || _a === void 0 ? void 0 : _a.value) === ((_b = this.board[i][j + 1]) === null || _b === void 0 ? void 0 : _b.value))
+                if (this.board[i][j]?.value === this.board[i][j + 1]?.value)
                     return false;
             }
         }
         // if there vertically adjacent identical value tiles the game is not lost
         for (let i = 0; i < tilesPerRow - 1; i++) {
             for (let j = 0; j < tilesPerRow; j++) {
-                if (((_c = this.board[i][j]) === null || _c === void 0 ? void 0 : _c.value) === ((_d = this.board[i + 1][j]) === null || _d === void 0 ? void 0 : _d.value))
+                if (this.board[i][j]?.value === this.board[i + 1][j]?.value)
                     return false;
             }
         }
@@ -232,12 +236,10 @@ class Game {
         this.gameOver = true;
         document.getElementById("game-over").style.display = "flex";
         document.getElementById("game-over").style.backgroundColor = "rgba(0, 0, 0, 0.65)";
-        document.getElementById("game-summary").innerHTML =
-            `<p>SCORE: ${this.score}</p>
+        document.getElementById("game-summary").innerHTML = `<p>SCORE: ${this.score}</p>
        <p>HIGH SCORE: ${this.highScore}</p>`;
     }
 }
 const dynamicColors = new DynamicColors();
-dynamicColors.init();
 const game = new Game();
 game.run();

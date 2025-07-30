@@ -26,8 +26,6 @@ html {
 
 body {
   font-family: "Open Sans", Roboto, Arial, sans-serif;
-  color: var(--text);
-  background-color: var(--text-2);
   font-size: font-size;
   overscroll-behavior: none;
 }
@@ -49,7 +47,6 @@ h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--window-bg);
 }
 
 #game-over {
@@ -103,7 +100,6 @@ h1 {
 #board {
   width: var(--board-size);
   height: var(--board-size);
-  background-color: var(--board-bg);
   border-radius: 10px;
   user-select: none;
 }
@@ -148,5 +144,7 @@ h1 {
 
 .animated-move {
   position: absolute;
-  transition: left 0.3s ease-in-out, top 0.3s ease-in-out;
+  transition:
+    left 0.3s ease-in-out,
+    top 0.3s ease-in-out;
 }
