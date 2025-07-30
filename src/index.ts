@@ -1,3 +1,7 @@
+import { themeManager } from "./themeManager.js";
+import { SwipingManager } from "./swipingManager.js";
+import { DynamicColors } from "./dynamicColors.js";
+
 const styles = getComputedStyle(document.documentElement);
 
 const [tilesPerRow, tileSize, tileMargin, tileFontSize] = [
@@ -70,8 +74,8 @@ class Tile {
     }
 
     // set new tile color
-    this.element.style.color = styles.getPropertyValue(`--text-${newValue}`);
-    this.element.style.backgroundColor = styles.getPropertyValue(`--bg-${newValue}`);
+    this.element.style.color = themeManager.getTileTextColor(newValue);
+    this.element.style.backgroundColor = themeManager.getTileBackgroundColor(newValue);
   }
 }
 
@@ -276,7 +280,6 @@ class Game {
 }
 
 const dynamicColors = new DynamicColors();
-dynamicColors.init();
 
 const game = new Game();
 game.run();

@@ -1,4 +1,6 @@
-class SwipingManager {
+type Direction = "Up" | "Down" | "Left" | "Right";
+
+export class SwipingManager {
   startX: number = 0;
   startY: number = 0;
   endX: number = 0;

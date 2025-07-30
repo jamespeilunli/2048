@@ -1,0 +1,34 @@
+{
+  "text": null,
+  "boardBackground": "white",
+  "windowBackground": "white",
+  "dynamicColor": "background-color",
+  "tileBackgroundColors": {
+    "2": "#6da9d2",
+    "4": "#3e92d0",
+    "8": "#2862a0",
+    "16": "#5e59a3",
+    "32": "#86538b",
+    "64": "#9e4f7d",
+    "128": "#c54b8c",
+    "256": "#d84a7a",
+    "512": "#f0738a",
+    "1024": "#ff8c94",
+    "2048": "#ff6f61",
+    "4096": "#de2e41"
+  },
+  "tileTextColors": {
+    "2": "white",
+    "4": "white",
+    "8": "white",
+    "16": "white",
+    "32": "white",
+    "64": "white",
+    "128": "white",
+    "256": "white",
+    "512": "white",
+    "1024": "white",
+    "2048": "white",
+    "4096": "white"
+  }
+}

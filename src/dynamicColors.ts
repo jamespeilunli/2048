@@ -1,15 +1,17 @@
-class DynamicColors {
-  type = styles.getPropertyValue("--dynamic-color") as "color" | "background-color";
-  changeFullWindow = styles.getPropertyValue("--window-bg") === "none";
-  changeBoard = styles.getPropertyValue("--board-bg") === "none";
-  changeText = styles.getPropertyValue("--text") === "none";
+import { themeManager } from "./themeManager.js";
 
-  init() {
+
+export class DynamicColors {
+  type = themeManager.getDynamicColor() as "color" | "background-color";
+  changeFullWindow = themeManager.getWindowBackground() === null;
+  changeBoard = themeManager.getBoardBackground() === null;
+  changeText = themeManager.getText() === null;
+
+  constructor() {
     // set up proper default values so that we don't have a color transition at the start
-
     if (this.changeText) {
       let style = document.getElementById("body")!.style;
-      style.color = styles.getPropertyValue("--text-2");
+      style.color = themeManager.getTileTextColor(2);
       requestAnimationFrame(() => {
         style.transition = "color 0.5s ease-in-out";
       });
@@ -20,7 +22,7 @@ class DynamicColors {
       });
     } else if (this.changeBoard) {
       let style = document.getElementById("board")!.style;
-      style.backgroundColor = styles.getPropertyValue("--bg-2");
+      style.backgroundColor = themeManager.getTileBackgroundColor(2);
       requestAnimationFrame(() => {
         style.transition = "background-color 0.5s ease-in-out";
       });
