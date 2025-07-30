@@ -4,15 +4,14 @@ const [tilesPerRow, tileSize, tileMargin, tileFontSize] = [
   styles.getPropertyValue("--tiles-per-row"),
   styles.getPropertyValue("--tile-size"),
   styles.getPropertyValue("--tile-margin"),
-  styles.getPropertyValue("--tile-font-size")].map((value) =>
-    value.endsWith("vw") ? parseInt(value) / 100 * window.innerWidth : parseInt(value)
-  )
+  styles.getPropertyValue("--tile-font-size"),
+].map((value) => (value.endsWith("vw") ? (parseInt(value) / 100) * window.innerWidth : parseInt(value)));
 
 const getColumn = (matrix: any[][], column: number) => matrix.map((row) => row[column]);
 
 type Pos = {
-  i: number,
-  j: number,
+  i: number;
+  j: number;
 };
 
 type Direction = "Up" | "Down" | "Left" | "Right";
@@ -65,9 +64,9 @@ class Tile {
 
     // correct font size for large values
     if (newValue > 9999) {
-      this.element.style.fontSize = `${2 * tileFontSize / 3}px`;
+      this.element.style.fontSize = `${(2 * tileFontSize) / 3}px`;
     } else if (newValue > 999) {
-      this.element.style.fontSize = `${4 * tileFontSize / 5}px`;
+      this.element.style.fontSize = `${(4 * tileFontSize) / 5}px`;
     }
 
     // set new tile color
@@ -86,7 +85,9 @@ class Game {
   swipingManager: SwipingManager | null = null;
 
   constructor() {
-    this.board = Array(tilesPerRow).fill(null).map(() => Array(tilesPerRow).fill(null));
+    this.board = Array(tilesPerRow)
+      .fill(null)
+      .map(() => Array(tilesPerRow).fill(null));
   }
 
   createTile(value: number, pos: Pos) {
@@ -170,11 +171,14 @@ class Game {
   move(direction: Direction) {
     if (direction === "Left") {
       this.board.forEach((row) => this.shiftLine(row, direction));
-    } if (direction === "Right") {
+    }
+    if (direction === "Right") {
       this.board.forEach((row) => this.shiftLine([...row].reverse(), direction));
-    } if (direction === "Up") {
+    }
+    if (direction === "Up") {
       this.board.forEach((row, index) => this.shiftLine(getColumn(this.board, index), direction));
-    } if (direction === "Down") {
+    }
+    if (direction === "Down") {
       this.board.forEach((row, index) => this.shiftLine(getColumn(this.board, index).reverse(), direction));
     }
   }
@@ -266,8 +270,7 @@ class Game {
     document.getElementById("game-over")!.style.display = "flex";
     document.getElementById("game-over")!.style.backgroundColor = "rgba(0, 0, 0, 0.65)";
 
-    document.getElementById("game-summary")!.innerHTML =
-      `<p>SCORE: ${this.score}</p>
+    document.getElementById("game-summary")!.innerHTML = `<p>SCORE: ${this.score}</p>
        <p>HIGH SCORE: ${this.highScore}</p>`;
   }
 }

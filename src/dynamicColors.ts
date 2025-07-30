@@ -1,5 +1,5 @@
 class DynamicColors {
-  type = styles.getPropertyValue("--dynamic-color") as ("color" | "background-color");
+  type = styles.getPropertyValue("--dynamic-color") as "color" | "background-color";
   changeFullWindow = styles.getPropertyValue("--window-bg") === "none";
   changeBoard = styles.getPropertyValue("--board-bg") === "none";
   changeText = styles.getPropertyValue("--text") === "none";
@@ -31,14 +31,13 @@ class DynamicColors {
     // replace dynamic color elements with the color of the highest tile
 
     if (this.changeFullWindow) {
-      document.getElementById("full-window")!.style.background =
-        highestTileStyle.getPropertyValue(this.type);
-    } if (this.changeBoard) {
-      document.getElementById("board")!.style.background =
-        highestTileStyle.getPropertyValue(this.type);
-    } if (this.changeText) {
-      document.getElementById("body")!.style.color =
-        highestTileStyle.getPropertyValue(this.type);
+      document.getElementById("full-window")!.style.background = highestTileStyle.getPropertyValue(this.type);
+    }
+    if (this.changeBoard) {
+      document.getElementById("board")!.style.background = highestTileStyle.getPropertyValue(this.type);
+    }
+    if (this.changeText) {
+      document.getElementById("body")!.style.color = highestTileStyle.getPropertyValue(this.type);
     }
   }
 }

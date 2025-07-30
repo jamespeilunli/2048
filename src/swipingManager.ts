@@ -11,13 +11,13 @@ class SwipingManager {
     this.onSwipe = onSwipe;
     this.threshold = threshold;
 
-    document.addEventListener('touchstart', e => {
+    document.addEventListener("touchstart", (e) => {
       this.swiped = false;
       this.startX = e.changedTouches[0].screenX;
       this.startY = e.changedTouches[0].screenY;
     });
 
-    document.addEventListener('touchmove', e => {
+    document.addEventListener("touchmove", (e) => {
       this.endX = e.changedTouches[0].screenX;
       this.endY = e.changedTouches[0].screenY;
       this.updateDirection();
