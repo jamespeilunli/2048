@@ -1,10 +1,9 @@
-import theme from './styles/defaultTheme.json' with { type: "json" };
+import theme from "./styles/defaultTheme.json" with { type: "json" };
 
 interface Theme {
-  text: string | null;
-  boardBackground: string | null;
-  windowBackground: string | null;
-  dynamicColor: string;
+  text: string;
+  boardBackground: string;
+  windowBackground: string;
   tileTextColors: { [key: string]: string };
   tileBackgroundColors: { [key: string]: string };
 }
@@ -19,20 +18,16 @@ export class ThemeManager {
     document.getElementById("board")!.style.backgroundColor = this.getBoardBackground() ?? "white";
   }
 
-  public getText(): string | null {
+  public getText(): string {
     return this.theme.text;
   }
 
-  public getBoardBackground(): string | null {
+  public getBoardBackground(): string {
     return this.theme.boardBackground;
   }
 
-  public getWindowBackground(): string | null {
+  public getWindowBackground(): string {
     return this.theme.windowBackground;
-  }
-
-  public getDynamicColor(): string {
-    return this.theme.dynamicColor;
   }
 
   public getTileTextColor(tileValue: number): string {
@@ -45,3 +40,4 @@ export class ThemeManager {
 }
 
 export const themeManager = new ThemeManager();
+

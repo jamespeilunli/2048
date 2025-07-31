@@ -206,7 +206,8 @@ class Game {
       this.highestTile = newTile;
     }
 
-    dynamicColors.updateColors(getComputedStyle(this.highestTile.element));
+    let style = getComputedStyle(this.highestTile.element);
+    dynamicColors.updateColors(style.color, style.backgroundColor);
   }
 
   lost() {

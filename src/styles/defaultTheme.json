@@ -1,8 +1,7 @@
 {
-  "text": null,
-  "boardBackground": "white",
+  "text": "dynamic-tile-background",
+  "boardBackground": "dynamic-tile-text",
   "windowBackground": "white",
-  "dynamicColor": "background-color",
   "tileBackgroundColors": {
     "2": "#6da9d2",
     "4": "#3e92d0",
@@ -20,8 +19,8 @@
   "tileTextColors": {
     "2": "white",
     "4": "white",
-    "8": "white",
-    "16": "white",
+    "8": "rebeccapurple",
+    "16": "lightpink",
     "32": "white",
     "64": "white",
     "128": "white",
