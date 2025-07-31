@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && cp -r public/* dist && cp -r src/styles/* dist",
+    "build": "tsc",
+    "copy-assets": "cp -r public/* dist && cp -r src/styles/* dist",
+    "dev": "concurrently \"npm run build -- --watch\" \"nodemon --watch public --watch src/styles --exec \\\"npm run copy-assets\\\"\" \"npx serve dist\"",
     "deploy": "gh-pages -d dist"
   },
   "homepage": "https://jamespeilunli.github.io/2048",
@@ -13,7 +15,9 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "concurrently": "^9.2.0",
     "gh-pages": "^6.3.0",
+    "nodemon": "^3.1.10",
     "typescript": "^5.7.3"
   }
 }
