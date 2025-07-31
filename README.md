@@ -5,11 +5,10 @@
 Run:
 
 ```bash
-npm install
-npm run build
+npm run dev
 ```
 
-Then go to `dist/index.html` in the browser.
+Then go to `localhost:3000` in the browser.
 
 ## Customizable Colors
 
