@@ -19,8 +19,8 @@
   "tileTextColors": {
     "2": "white",
     "4": "white",
-    "8": "rebeccapurple",
-    "16": "lightpink",
+    "8": "white",
+    "16": "white",
     "32": "white",
     "64": "white",
     "128": "white",
