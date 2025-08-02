@@ -80,18 +80,44 @@ class Tile {
 }
 
 class Game {
-  board: (Tile | null)[][];
-  moved: boolean = false; // have any tiles moved this turn?
-  score: number = 0;
-  highScore: number = 0;
-  highestTile: Tile | null = null;
-  gameOver: boolean = false;
-  swipingManager: SwipingManager | null = null;
+  board!: (Tile | null)[][];
+  moved!: boolean; // have any tiles moved this turn?
+  score!: number;
+  highScore!: number;
+  highestTile!: Tile | null;
+  gameOver!: boolean;
+  swipingManager!: SwipingManager | null;
 
   constructor() {
+    this.resetState();
+
+    window.addEventListener("keydown", (ev) => {
+      if (!this.gameOver) {
+        if (["ArrowUp", "w"].includes(ev.key)) {
+          this.tick("Up" as Direction);
+        }
+        if (["ArrowLeft", "a"].includes(ev.key)) {
+          this.tick("Left" as Direction);
+        }
+        if (["ArrowDown", "s"].includes(ev.key)) {
+          this.tick("Down" as Direction);
+        }
+        if (["ArrowRight", "d"].includes(ev.key)) {
+          this.tick("Right" as Direction);
+        }
+      }
+    });
+  }
+
+  private resetState() {
     this.board = Array(tilesPerRow)
       .fill(null)
       .map(() => Array(tilesPerRow).fill(null));
+    this.moved = false;
+    this.score = 0;
+    this.highestTile = null;
+    this.gameOver = false;
+    this.swipingManager = null;
   }
 
   createTile(value: number, pos: Pos) {
@@ -248,23 +274,6 @@ class Game {
     this.spawnTile();
     this.updateHighScore();
 
-    window.addEventListener("keydown", (ev) => {
-      if (!this.gameOver) {
-        if (["ArrowUp", "w"].includes(ev.key)) {
-          this.tick("Up" as Direction);
-        }
-        if (["ArrowLeft", "a"].includes(ev.key)) {
-          this.tick("Left" as Direction);
-        }
-        if (["ArrowDown", "s"].includes(ev.key)) {
-          this.tick("Down" as Direction);
-        }
-        if (["ArrowRight", "d"].includes(ev.key)) {
-          this.tick("Right" as Direction);
-        }
-      }
-    });
-
     this.swipingManager = new SwipingManager((direction: Direction) => this.tick(direction));
   }
 
@@ -273,9 +282,27 @@ class Game {
 
     document.getElementById("game-over")!.style.display = "flex";
     document.getElementById("game-over")!.style.backgroundColor = "rgba(0, 0, 0, 0.65)";
+    document.getElementById("play-again")!.onclick = () => {
+      this.restart();
+    };
 
     document.getElementById("game-summary")!.innerHTML = `<p>SCORE: ${this.score}</p>
        <p>HIGH SCORE: ${this.highScore}</p>`;
+  }
+
+  restart() {
+    for (let i = 0; i < tilesPerRow; i++) {
+      for (let j = 0; j < tilesPerRow; j++) {
+        this.board[i][j]?.element.remove();
+      }
+    }
+
+    this.resetState();
+    this.displayScore();
+
+    document.getElementById("game-over")!.style.display = "none";
+
+    this.run();
   }
 }
 
