@@ -67,13 +67,14 @@ h1 {
   margin: 10px;
 }
 
-.links a {
+.links * {
   color: white;
   text-decoration: none;
 }
 
-.links a:hover {
+.links *:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 #stats {

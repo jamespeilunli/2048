@@ -1,9 +1,8 @@
 {
-  "text": "black",
-  "boardBackground": null,
-  "windowBackground": "pink",
-  "dynamicColor": "color",
-  "tileTextColors": {
+  "text": "dynamic-tile-background",
+  "boardBackground": "dynamic-tile-text",
+  "windowBackground": "white",
+  "tileBackgroundColors": {
     "2": "#6da9d2",
     "4": "#3e92d0",
     "8": "#2862a0",
@@ -17,7 +16,7 @@
     "2048": "#ff6f61",
     "4096": "#de2e41"
   },
-  "tileBackgroundColors": {
+  "tileTextColors": {
     "2": "white",
     "4": "white",
     "8": "white",

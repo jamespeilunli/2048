@@ -60,16 +60,40 @@ class Tile {
 }
 class Game {
     board;
-    moved = false; // have any tiles moved this turn?
-    score = 0;
-    highScore = 0;
-    highestTile = null;
-    gameOver = false;
-    swipingManager = null;
+    moved; // have any tiles moved this turn?
+    score;
+    highScore;
+    highestTile;
+    gameOver;
+    swipingManager;
     constructor() {
+        this.resetState();
+        window.addEventListener("keydown", (ev) => {
+            if (!this.gameOver) {
+                if (["ArrowUp", "w"].includes(ev.key)) {
+                    this.tick("Up");
+                }
+                if (["ArrowLeft", "a"].includes(ev.key)) {
+                    this.tick("Left");
+                }
+                if (["ArrowDown", "s"].includes(ev.key)) {
+                    this.tick("Down");
+                }
+                if (["ArrowRight", "d"].includes(ev.key)) {
+                    this.tick("Right");
+                }
+            }
+        });
+    }
+    resetState() {
         this.board = Array(tilesPerRow)
             .fill(null)
             .map(() => Array(tilesPerRow).fill(null));
+        this.moved = false;
+        this.score = 0;
+        this.highestTile = null;
+        this.gameOver = false;
+        this.swipingManager = null;
     }
     createTile(value, pos) {
         this.board[pos.i][pos.j] = new Tile(value, pos);
@@ -174,7 +198,8 @@ class Game {
         else {
             this.highestTile = newTile;
         }
-        dynamicColors.updateColors(getComputedStyle(this.highestTile.element));
+        let style = getComputedStyle(this.highestTile.element);
+        dynamicColors.updateColors(style.color, style.backgroundColor);
     }
     lost() {
         // if there are empty tiles the game is not lost
@@ -213,31 +238,28 @@ class Game {
     run() {
         this.spawnTile();
         this.updateHighScore();
-        window.addEventListener("keydown", (ev) => {
-            if (!this.gameOver) {
-                console.log(ev.key);
-                if (["ArrowUp", "w"].includes(ev.key)) {
-                    this.tick("Up");
-                }
-                if (["ArrowLeft", "a"].includes(ev.key)) {
-                    this.tick("Left");
-                }
-                if (["ArrowDown", "s"].includes(ev.key)) {
-                    this.tick("Down");
-                }
-                if (["ArrowRight", "d"].includes(ev.key)) {
-                    this.tick("Right");
-                }
-            }
-        });
         this.swipingManager = new SwipingManager((direction) => this.tick(direction));
     }
     end() {
         this.gameOver = true;
         document.getElementById("game-over").style.display = "flex";
         document.getElementById("game-over").style.backgroundColor = "rgba(0, 0, 0, 0.65)";
+        document.getElementById("play-again").onclick = () => {
+            this.restart();
+        };
         document.getElementById("game-summary").innerHTML = `<p>SCORE: ${this.score}</p>
        <p>HIGH SCORE: ${this.highScore}</p>`;
+    }
+    restart() {
+        for (let i = 0; i < tilesPerRow; i++) {
+            for (let j = 0; j < tilesPerRow; j++) {
+                this.board[i][j]?.element.remove();
+            }
+        }
+        this.resetState();
+        this.displayScore();
+        document.getElementById("game-over").style.display = "none";
+        this.run();
     }
 }
 const dynamicColors = new DynamicColors();

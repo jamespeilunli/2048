@@ -1,4 +1,4 @@
-import theme from './styles/defaultTheme.json' with { type: "json" };
+import theme from "./styles/defaultTheme.json" with { type: "json" };
 export class ThemeManager {
     theme;
     constructor() {
@@ -14,9 +14,6 @@ export class ThemeManager {
     }
     getWindowBackground() {
         return this.theme.windowBackground;
-    }
-    getDynamicColor() {
-        return this.theme.dynamicColor;
     }
     getTileTextColor(tileValue) {
         return this.theme.tileTextColors[tileValue.toString()];
