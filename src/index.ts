@@ -73,9 +73,14 @@ class Tile {
       this.element.style.fontSize = `${(4 * tileFontSize) / 5}px`;
     }
 
-    // set new tile color
-    this.element.style.color = themeManager.getTileTextColor(newValue);
-    this.element.style.backgroundColor = themeManager.getTileBackgroundColor(newValue);
+    this.refreshColor();
+  }
+
+  // set new tile color
+  // TODO: WE NEED TO DO THIS ON THEME CHANGE
+  refreshColor() {
+    this.element.style.color = themeManager.getTileTextColor(this.value);
+    this.element.style.backgroundColor = themeManager.getTileBackgroundColor(this.value);
   }
 }
 
@@ -104,6 +109,9 @@ class Game {
         }
         if (["ArrowRight", "d"].includes(ev.key)) {
           this.tick("Right" as Direction);
+        }
+        if (["7"].includes(ev.key)) {
+          this.end();
         }
       }
     });
@@ -282,7 +290,7 @@ class Game {
 
     document.getElementById("game-over")!.style.display = "flex";
     document.getElementById("game-over")!.style.backgroundColor = "rgba(0, 0, 0, 0.65)";
-    document.getElementById("play-again")!.onclick = () => {
+    document.getElementById("play-again-button")!.onclick = () => {
       this.restart();
     };
 

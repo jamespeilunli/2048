@@ -9,6 +9,7 @@ export class DynamicColors {
       document.getElementById("board")!.style.transition = "background-color 0.5s ease-in-out";
     });
 
+    // TODO: WE NEED TO DO THIS ON THEME CHANGE
     this.updateColors(themeManager.getTileTextColor(2), themeManager.getTileBackgroundColor(2));
   }
 
