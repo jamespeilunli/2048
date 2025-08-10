@@ -109,9 +109,6 @@ class Game {
         if (["ArrowRight", "d"].includes(ev.key)) {
           this.tick("Right" as Direction);
         }
-        if (["7"].includes(ev.key)) {
-          this.end();
-        }
       }
     });
   }
