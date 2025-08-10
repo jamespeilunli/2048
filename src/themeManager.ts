@@ -14,13 +14,32 @@ export class ThemeManager {
   constructor() {
     this.theme = theme as Theme;
 
-    this.resetBackgrounds();
+    this.resetTextAndBackgrounds();
     this.setupThemeFileLoading();
   }
 
-  resetBackgrounds() {
-    document.getElementById("full-window")!.style.backgroundColor = this.getWindowBackground() ?? "white";
-    document.getElementById("board")!.style.backgroundColor = this.getBoardBackground() ?? "white";
+  resetTextAndBackgrounds() {
+    const text = this.getText();
+    const windowBg = this.getWindowBackground();
+    const boardBg = this.getBoardBackground();
+
+    if (text !== "dynamic-tile-background" && text !== "dynamic-tile-text") {
+      document.getElementById("body")!.style.color = text ?? "white";
+    }
+
+    if (windowBg !== "dynamic-tile-background" && windowBg !== "dynamic-tile-text") {
+      document.getElementById("full-window")!.style.backgroundColor = windowBg ?? "white";
+    }
+
+    if (boardBg !== "dynamic-tile-background" && boardBg !== "dynamic-tile-text") {
+      document.getElementById("board")!.style.backgroundColor = boardBg ?? "white";
+    }
+  }
+
+  private themeChangeListeners: Array<() => void> = [];
+
+  public onThemeChange(listener: () => void): void {
+    this.themeChangeListeners.push(listener);
   }
 
   loadTheme(theme: Theme) {
@@ -41,7 +60,9 @@ export class ThemeManager {
 
         if (this.isValidTheme(parsed)) {
           this.loadTheme(parsed);
-          this.resetBackgrounds();
+          this.resetTextAndBackgrounds();
+
+          this.themeChangeListeners.forEach((listener) => listener());
         } else {
           alert("Invalid theme file structure.");
         }

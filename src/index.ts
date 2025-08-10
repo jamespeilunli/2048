@@ -77,7 +77,6 @@ class Tile {
   }
 
   // set new tile color
-  // TODO: WE NEED TO DO THIS ON THEME CHANGE
   refreshColor() {
     this.element.style.color = themeManager.getTileTextColor(this.value);
     this.element.style.backgroundColor = themeManager.getTileBackgroundColor(this.value);
@@ -318,3 +317,8 @@ const dynamicColors = new DynamicColors();
 
 const game = new Game();
 game.run();
+
+themeManager.onThemeChange(() => {
+  dynamicColors.updateColors(themeManager.getTileTextColor(2), themeManager.getTileBackgroundColor(2));
+  game.board.forEach((row) => row.forEach((tile) => tile?.refreshColor()));
+});
