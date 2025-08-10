@@ -53,9 +53,12 @@ class Tile {
         else if (newValue > 999) {
             this.element.style.fontSize = `${(4 * tileFontSize) / 5}px`;
         }
-        // set new tile color
-        this.element.style.color = themeManager.getTileTextColor(newValue);
-        this.element.style.backgroundColor = themeManager.getTileBackgroundColor(newValue);
+        this.refreshColor();
+    }
+    // set new tile color
+    refreshColor() {
+        this.element.style.color = themeManager.getTileTextColor(this.value);
+        this.element.style.backgroundColor = themeManager.getTileBackgroundColor(this.value);
     }
 }
 class Game {
@@ -244,7 +247,7 @@ class Game {
         this.gameOver = true;
         document.getElementById("game-over").style.display = "flex";
         document.getElementById("game-over").style.backgroundColor = "rgba(0, 0, 0, 0.65)";
-        document.getElementById("play-again").onclick = () => {
+        document.getElementById("play-again-button").onclick = () => {
             this.restart();
         };
         document.getElementById("game-summary").innerHTML = `<p>SCORE: ${this.score}</p>
@@ -265,3 +268,7 @@ class Game {
 const dynamicColors = new DynamicColors();
 const game = new Game();
 game.run();
+themeManager.onThemeChange(() => {
+    dynamicColors.updateColors(themeManager.getTileTextColor(2), themeManager.getTileBackgroundColor(2));
+    game.board.forEach((row) => row.forEach((tile) => tile?.refreshColor()));
+});
