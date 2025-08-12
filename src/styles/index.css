@@ -168,8 +168,6 @@ h1 {
   align-items: flex-start;
   overflow: hidden;
   width: 0;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
   transition: width 0.3s ease-in-out;
   margin-left: var(--tile-margin);
 }
