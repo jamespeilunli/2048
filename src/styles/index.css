@@ -5,6 +5,7 @@
     --tile-margin: 2vw;
     --tile-font-size: calc(var(--tile-size) / 2);
     --board-size: calc(var(--tile-margin) + var(--tiles-per-row) * (var(--tile-margin) + var(--tile-size)));
+    --menu-width: calc(var(--board-size) / 2);
     --font-size: 20px;
   }
 }
@@ -16,6 +17,7 @@
     --tile-margin: 10px;
     --tile-font-size: calc(var(--tile-size) / 2);
     --board-size: calc(var(--tile-margin) + var(--tiles-per-row) * (var(--tile-margin) + var(--tile-size)));
+    --menu-width: calc(var(--board-size) / 2);
     --font-size: large;
   }
 }
@@ -49,26 +51,13 @@ h1 {
   height: 100%;
 }
 
-#game-over {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  flex-direction: column;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  color: white;
-}
-
-#game-over * {
+#menu * {
   position: relative;
   margin: 10px;
 }
 
 .links * {
-  color: white;
+  color: inherit;
   text-decoration: none;
 }
 
@@ -148,4 +137,43 @@ h1 {
   transition:
     left 0.3s ease-in-out,
     top 0.3s ease-in-out;
+}
+
+/* Menu panel and layout */
+#main-content {
+  display: flex;
+  align-items: flex-start;
+}
+
+#game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#menu-toggle {
+  position: absolute;
+  top: calc(var(--tile-margin) / 2);
+  right: calc(var(--tile-margin) / 2);
+  background: none;
+  border: none;
+  font-size: var(--font-size);
+  cursor: pointer;
+  color: inherit;
+}
+
+#menu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: hidden;
+  width: 0;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  transition: width 0.3s ease-in-out;
+  margin-left: var(--tile-margin);
+}
+
+#menu.open {
+  width: var(--menu-width);
 }

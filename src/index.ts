@@ -111,6 +111,10 @@ class Game {
         }
       }
     });
+
+    document.getElementById("play-again-button")!.onclick = () => {
+      this.restart();
+    };
   }
 
   private resetState() {
@@ -284,11 +288,8 @@ class Game {
   end() {
     this.gameOver = true;
 
-    document.getElementById("game-over")!.style.display = "flex";
-    document.getElementById("game-over")!.style.backgroundColor = "rgba(0, 0, 0, 0.65)";
-    document.getElementById("play-again-button")!.onclick = () => {
-      this.restart();
-    };
+    const menuPanel = document.getElementById("menu")!;
+    menuPanel.classList.add("open");
 
     document.getElementById("game-summary")!.innerHTML = `<p>SCORE: ${this.score}</p>
        <p>HIGH SCORE: ${this.highScore}</p>`;
@@ -304,7 +305,7 @@ class Game {
     this.resetState();
     this.displayScore();
 
-    document.getElementById("game-over")!.style.display = "none";
+    document.getElementById("menu")!.classList.remove("open");
 
     this.run();
   }
@@ -318,4 +319,13 @@ game.run();
 themeManager.onThemeChange(() => {
   dynamicColors.updateColors(themeManager.getTileTextColor(2), themeManager.getTileBackgroundColor(2));
   game.board.forEach((row) => row.forEach((tile) => tile?.refreshColor()));
+});
+
+const menuToggle = document.getElementById("menu-toggle")!;
+const menuPanel = document.getElementById("menu")!;
+menuToggle.addEventListener("click", () => menuPanel.classList.toggle("open"));
+window.addEventListener("keydown", (ev) => {
+  if (ev.key == " ") {
+    menuPanel.classList.toggle("open");
+  }
 });

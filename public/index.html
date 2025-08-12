@@ -10,24 +10,29 @@
   <body id="body">
     <div id="full-window">
       <h1>2048</h1>
-      <div id="board-container">
-        <div id="board"></div>
-      </div>
-      <div id="stats">
-        <span id="score">SCORE: 0</span>
-        <span id="high-score">HIGH SCORE: 0</span>
-      </div>
-    </div>
-    <div id="game-over">
-      <h1>Game Over</h1>
-      <div id="game-summary"></div>
-      <div class="links">
-        <span id="play-again-button">Play Again</span>
+      <button id="menu-toggle" aria-label="Menu">&#9776;</button>
+      <div id="main-content">
+        <div id="game-area">
+          <div id="board-container">
+            <div id="board"></div>
+          </div>
+          <div id="stats">
+            <span id="score">SCORE: 0</span>
+            <span id="high-score">HIGH SCORE: 0</span>
+          </div>
+        </div>
+        <div id="menu">
+          <h1>Game Over</h1>
+          <div id="game-summary"></div>
+          <div class="links">
+            <span id="play-again-button">Play Again</span>
 
-        <input type="file" id="load-theme-button" accept=".json" hidden />
-        <label for="load-theme-button">Load Theme</label>
+            <input type="file" id="load-theme-button" accept=".json" hidden />
+            <label for="load-theme-button">Load Theme</label>
 
-        <a href="https://github.com/jamespeilunli/2048">GitHub</a>
+            <a href="https://github.com/jamespeilunli/2048">GitHub</a>
+          </div>
+        </div>
       </div>
     </div>
 
