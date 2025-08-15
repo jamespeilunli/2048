@@ -1,3 +1,4 @@
+import { menuManager } from "./menuManager.js";
 import { themeManager } from "./themeManager.js";
 import { SwipingManager } from "./swipingManager.js";
 import { DynamicColors } from "./dynamicColors.js";
@@ -111,6 +112,10 @@ class Game {
         }
       }
     });
+
+    document.getElementById("play-again-button")!.onclick = () => {
+      this.restart();
+    };
   }
 
   private resetState() {
@@ -284,14 +289,7 @@ class Game {
   end() {
     this.gameOver = true;
 
-    document.getElementById("game-over")!.style.display = "flex";
-    document.getElementById("game-over")!.style.backgroundColor = "rgba(0, 0, 0, 0.65)";
-    document.getElementById("play-again-button")!.onclick = () => {
-      this.restart();
-    };
-
-    document.getElementById("game-summary")!.innerHTML = `<p>SCORE: ${this.score}</p>
-       <p>HIGH SCORE: ${this.highScore}</p>`;
+    menuManager.gameOver(this.score, this.highScore);
   }
 
   restart() {
@@ -304,7 +302,7 @@ class Game {
     this.resetState();
     this.displayScore();
 
-    document.getElementById("game-over")!.style.display = "none";
+    menuManager.reset();
 
     this.run();
   }
