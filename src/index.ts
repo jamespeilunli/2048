@@ -1,3 +1,4 @@
+import { menuManager } from "./menuManager.js";
 import { themeManager } from "./themeManager.js";
 import { SwipingManager } from "./swipingManager.js";
 import { DynamicColors } from "./dynamicColors.js";
@@ -288,11 +289,7 @@ class Game {
   end() {
     this.gameOver = true;
 
-    const menuPanel = document.getElementById("menu")!;
-    menuPanel.classList.add("open");
-
-    document.getElementById("game-summary")!.innerHTML = `<p>SCORE: ${this.score}</p>
-       <p>HIGH SCORE: ${this.highScore}</p>`;
+    menuManager.gameOver(this.score, this.highScore);
   }
 
   restart() {
@@ -305,7 +302,7 @@ class Game {
     this.resetState();
     this.displayScore();
 
-    document.getElementById("menu")!.classList.remove("open");
+    menuManager.reset();
 
     this.run();
   }
@@ -319,13 +316,4 @@ game.run();
 themeManager.onThemeChange(() => {
   dynamicColors.updateColors(themeManager.getTileTextColor(2), themeManager.getTileBackgroundColor(2));
   game.board.forEach((row) => row.forEach((tile) => tile?.refreshColor()));
-});
-
-const menuToggle = document.getElementById("menu-toggle")!;
-const menuPanel = document.getElementById("menu")!;
-menuToggle.addEventListener("click", () => menuPanel.classList.toggle("open"));
-window.addEventListener("keydown", (ev) => {
-  if (ev.key == " ") {
-    menuPanel.classList.toggle("open");
-  }
 });
