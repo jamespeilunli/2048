@@ -12,6 +12,10 @@ class MenuManager {
     });
   }
 
+  isOpen() {
+    return this.menuPanel.classList.contains("open");
+  }
+
   gameOver(score: number, highScore: number) {
     this.openMenu();
 

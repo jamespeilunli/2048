@@ -97,7 +97,7 @@ class Game {
     this.resetState();
 
     window.addEventListener("keydown", (ev) => {
-      if (!this.gameOver) {
+      if (!this.gameOver && !menuManager.isOpen()) {
         if (["ArrowUp", "w"].includes(ev.key)) {
           this.tick("Up" as Direction);
         }
