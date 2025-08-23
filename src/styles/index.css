@@ -92,6 +92,12 @@ h1 {
   height: var(--board-size);
   border-radius: 10px;
   user-select: none;
+  opacity: 1;
+  transition: opacity 0.25s ease-in-out;
+}
+
+#board.dimmed {
+  opacity: 0.5;
 }
 
 .tile {
@@ -165,12 +171,16 @@ h1 {
 #menu {
   overflow: hidden;
   width: 0;
-  transition: width 0.3s ease-in-out;
+  opacity: 0;
+  transition:
+    width 0.3s ease-in-out,
+    opacity 0.2s ease-in-out;
   margin-left: var(--tile-margin);
 }
 
 #menu.open {
   width: var(--menu-width);
+  opacity: 1;
 }
 
 .menu-content {

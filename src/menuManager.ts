@@ -32,14 +32,13 @@ class MenuManager {
   }
 
   openMenu() {
-    this.board.style.opacity = "0.5";
-
     this.menuPanel.classList.add("open");
+    this.board.classList.add("dimmed");
   }
 
   closeMenu() {
-    this.board.style.opacity = "";
     this.menuPanel.classList.remove("open");
+    this.board.classList.remove("dimmed");
   }
 
   toggleMenu() {
