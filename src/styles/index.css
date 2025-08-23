@@ -163,9 +163,6 @@ h1 {
 }
 
 #menu {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   overflow: hidden;
   width: 0;
   transition: width 0.3s ease-in-out;
@@ -174,4 +171,12 @@ h1 {
 
 #menu.open {
   width: var(--menu-width);
+}
+
+.menu-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: var(--menu-width);
+  margin: 0;
 }
