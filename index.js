@@ -1,3 +1,4 @@
+import { menuManager } from "./menuManager.js";
 import { themeManager } from "./themeManager.js";
 import { SwipingManager } from "./swipingManager.js";
 import { DynamicColors } from "./dynamicColors.js";
@@ -72,21 +73,22 @@ class Game {
     constructor() {
         this.resetState();
         window.addEventListener("keydown", (ev) => {
-            if (!this.gameOver) {
-                if (["ArrowUp", "w"].includes(ev.key)) {
-                    this.tick("Up");
-                }
-                if (["ArrowLeft", "a"].includes(ev.key)) {
-                    this.tick("Left");
-                }
-                if (["ArrowDown", "s"].includes(ev.key)) {
-                    this.tick("Down");
-                }
-                if (["ArrowRight", "d"].includes(ev.key)) {
-                    this.tick("Right");
-                }
+            if (["ArrowUp", "w"].includes(ev.key)) {
+                this.tick("Up");
+            }
+            if (["ArrowLeft", "a"].includes(ev.key)) {
+                this.tick("Left");
+            }
+            if (["ArrowDown", "s"].includes(ev.key)) {
+                this.tick("Down");
+            }
+            if (["ArrowRight", "d"].includes(ev.key)) {
+                this.tick("Right");
             }
         });
+        document.getElementById("play-again-button").onclick = () => {
+            this.restart();
+        };
     }
     resetState() {
         this.board = Array(tilesPerRow)
@@ -229,14 +231,16 @@ class Game {
         return true;
     }
     tick(key) {
-        this.moved = false;
-        this.move(key);
-        this.displayScore();
-        this.updateHighScore();
-        if (this.moved)
-            this.spawnTile();
-        if (this.lost())
-            this.end();
+        if (!this.gameOver && !menuManager.isOpen()) {
+            this.moved = false;
+            this.move(key);
+            this.displayScore();
+            this.updateHighScore();
+            if (this.moved)
+                this.spawnTile();
+            if (this.lost())
+                this.end();
+        }
     }
     run() {
         this.spawnTile();
@@ -245,13 +249,7 @@ class Game {
     }
     end() {
         this.gameOver = true;
-        document.getElementById("game-over").style.display = "flex";
-        document.getElementById("game-over").style.backgroundColor = "rgba(0, 0, 0, 0.65)";
-        document.getElementById("play-again-button").onclick = () => {
-            this.restart();
-        };
-        document.getElementById("game-summary").innerHTML = `<p>SCORE: ${this.score}</p>
-       <p>HIGH SCORE: ${this.highScore}</p>`;
+        menuManager.gameOver(this.score, this.highScore);
     }
     restart() {
         for (let i = 0; i < tilesPerRow; i++) {
@@ -261,7 +259,7 @@ class Game {
         }
         this.resetState();
         this.displayScore();
-        document.getElementById("game-over").style.display = "none";
+        menuManager.reset();
         this.run();
     }
 }
