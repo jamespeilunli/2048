@@ -1,3 +1,4 @@
+import { menuManager } from "./menuManager.js";
 import { themeManager } from "./themeManager.js";
 import { SwipingManager } from "./swipingManager.js";
 import { DynamicColors } from "./dynamicColors.js";
@@ -96,21 +97,23 @@ class Game {
     this.resetState();
 
     window.addEventListener("keydown", (ev) => {
-      if (!this.gameOver) {
-        if (["ArrowUp", "w"].includes(ev.key)) {
-          this.tick("Up" as Direction);
-        }
-        if (["ArrowLeft", "a"].includes(ev.key)) {
-          this.tick("Left" as Direction);
-        }
-        if (["ArrowDown", "s"].includes(ev.key)) {
-          this.tick("Down" as Direction);
-        }
-        if (["ArrowRight", "d"].includes(ev.key)) {
-          this.tick("Right" as Direction);
-        }
+      if (["ArrowUp", "w"].includes(ev.key)) {
+        this.tick("Up" as Direction);
+      }
+      if (["ArrowLeft", "a"].includes(ev.key)) {
+        this.tick("Left" as Direction);
+      }
+      if (["ArrowDown", "s"].includes(ev.key)) {
+        this.tick("Down" as Direction);
+      }
+      if (["ArrowRight", "d"].includes(ev.key)) {
+        this.tick("Right" as Direction);
       }
     });
+
+    document.getElementById("play-again-button")!.onclick = () => {
+      this.restart();
+    };
   }
 
   private resetState() {
@@ -266,12 +269,14 @@ class Game {
   }
 
   tick(key: Direction) {
-    this.moved = false;
-    this.move(key);
-    this.displayScore();
-    this.updateHighScore();
-    if (this.moved) this.spawnTile();
-    if (this.lost()) this.end();
+    if (!this.gameOver && !menuManager.isOpen()) {
+      this.moved = false;
+      this.move(key);
+      this.displayScore();
+      this.updateHighScore();
+      if (this.moved) this.spawnTile();
+      if (this.lost()) this.end();
+    }
   }
 
   run() {
@@ -284,14 +289,7 @@ class Game {
   end() {
     this.gameOver = true;
 
-    document.getElementById("game-over")!.style.display = "flex";
-    document.getElementById("game-over")!.style.backgroundColor = "rgba(0, 0, 0, 0.65)";
-    document.getElementById("play-again-button")!.onclick = () => {
-      this.restart();
-    };
-
-    document.getElementById("game-summary")!.innerHTML = `<p>SCORE: ${this.score}</p>
-       <p>HIGH SCORE: ${this.highScore}</p>`;
+    menuManager.gameOver(this.score, this.highScore);
   }
 
   restart() {
@@ -304,7 +302,7 @@ class Game {
     this.resetState();
     this.displayScore();
 
-    document.getElementById("game-over")!.style.display = "none";
+    menuManager.reset();
 
     this.run();
   }
