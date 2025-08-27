@@ -22,6 +22,11 @@
   }
 }
 
+/* prevent scrollbars */
+#full-window {
+  overflow: hidden;
+}
+
 html {
   overscroll-behavior: none;
 }
@@ -145,12 +150,6 @@ h1 {
     top 0.3s ease-in-out;
 }
 
-/* Menu panel and layout */
-#main-content {
-  display: flex;
-  align-items: flex-start;
-}
-
 #game-area {
   display: flex;
   flex-direction: column;
@@ -176,17 +175,53 @@ h1 {
     width 0.3s ease-in-out,
     opacity 0.2s ease-in-out;
   margin-left: var(--tile-margin);
-}
-
-#menu.open {
-  width: var(--menu-width);
-  opacity: 1;
+  height: auto;
 }
 
 .menu-content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: var(--menu-width);
   margin: 0;
+}
+
+@media screen and (min-width: 501px) {
+  #main-content {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  #menu.open {
+    width: var(--menu-width);
+    opacity: 1;
+  }
+
+  .menu-content {
+    width: var(--menu-width);
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #menu {
+    overflow: hidden;
+    width: auto;
+    opacity: 0;
+  }
+
+  #main-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  #menu.open {
+    width: auto;
+    opacity: 1;
+  }
+
+  .menu-content {
+    width: auto;
+  }
 }

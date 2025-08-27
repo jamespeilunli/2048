@@ -97,19 +97,17 @@ class Game {
     this.resetState();
 
     window.addEventListener("keydown", (ev) => {
-      if (!this.gameOver && !menuManager.isOpen()) {
-        if (["ArrowUp", "w"].includes(ev.key)) {
-          this.tick("Up" as Direction);
-        }
-        if (["ArrowLeft", "a"].includes(ev.key)) {
-          this.tick("Left" as Direction);
-        }
-        if (["ArrowDown", "s"].includes(ev.key)) {
-          this.tick("Down" as Direction);
-        }
-        if (["ArrowRight", "d"].includes(ev.key)) {
-          this.tick("Right" as Direction);
-        }
+      if (["ArrowUp", "w"].includes(ev.key)) {
+        this.tick("Up" as Direction);
+      }
+      if (["ArrowLeft", "a"].includes(ev.key)) {
+        this.tick("Left" as Direction);
+      }
+      if (["ArrowDown", "s"].includes(ev.key)) {
+        this.tick("Down" as Direction);
+      }
+      if (["ArrowRight", "d"].includes(ev.key)) {
+        this.tick("Right" as Direction);
       }
     });
 
@@ -271,12 +269,14 @@ class Game {
   }
 
   tick(key: Direction) {
-    this.moved = false;
-    this.move(key);
-    this.displayScore();
-    this.updateHighScore();
-    if (this.moved) this.spawnTile();
-    if (this.lost()) this.end();
+    if (!this.gameOver && !menuManager.isOpen()) {
+      this.moved = false;
+      this.move(key);
+      this.displayScore();
+      this.updateHighScore();
+      if (this.moved) this.spawnTile();
+      if (this.lost()) this.end();
+    }
   }
 
   run() {
