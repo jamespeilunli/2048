@@ -68,11 +68,13 @@ class Tile {
     this.element.innerText = newValue.toString();
 
     // correct font size for large values
-    if (newValue > 9999) {
-      this.element.style.fontSize = `${(2 * tileFontSize) / 3}px`;
-    } else if (newValue > 999) {
-      this.element.style.fontSize = `${(4 * tileFontSize) / 5}px`;
-    }
+    requestAnimationFrame(() => {
+      if (newValue > 9999) {
+        this.element.style.fontSize = `${(2 * tileFontSize) / 3}px`;
+      } else if (newValue > 999) {
+        this.element.style.fontSize = `${(4 * tileFontSize) / 5}px`;
+      }
+    });
 
     this.refreshColor();
   }
