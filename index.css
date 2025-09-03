@@ -3,7 +3,7 @@
     --tiles-per-row: 4;
     --tile-size: 22vw;
     --tile-margin: 2vw;
-    --tile-font-size: calc(var(--tile-size) / 2);
+    --tile-font-size: 11vw;
     --board-size: calc(var(--tile-margin) + var(--tiles-per-row) * (var(--tile-margin) + var(--tile-size)));
     --font-size: 20px;
   }
@@ -14,7 +14,7 @@
     --tiles-per-row: 4;
     --tile-size: 100px;
     --tile-margin: 10px;
-    --tile-font-size: calc(var(--tile-size) / 2);
+    --tile-font-size: 50px;
     --board-size: calc(var(--tile-margin) + var(--tiles-per-row) * (var(--tile-margin) + var(--tile-size)));
     --menu-width: calc(var(--board-size) / 2);
     --font-size: large;
