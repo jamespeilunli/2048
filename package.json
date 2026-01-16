@@ -4,9 +4,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "copy-assets": "cp -r public/* dist && cp -r src/styles/* dist",
-    "dev": "concurrently \"npm run build -- --watch\" \"nodemon --watch public --watch src/styles --exec \\\"npm run copy-assets\\\"\" \"npx serve dist\"",
+    "build": "tsc && npm run copy-assets",
+    "build:watch": "tsc --watch --preserveWatchOutput",
+    "copy-assets": "mkdir -p dist && cp -r public/* dist && cp -r src/styles/* dist",
+    "copy-assets:watch": "chokidar \"public/**/*\" \"src/styles/**/*\" -c \"npm run copy-assets\"",
+    "serve": "browser-sync start --server dist --files dist --no-open --no-notify",
+    "dev": "concurrently \"npm run build:watch\" \"npm run copy-assets:watch\" \"npm run serve\"",
     "deploy": "gh-pages -d dist"
   },
   "homepage": "https://jamespeilunli.github.io/2048",
@@ -15,9 +18,10 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "browser-sync": "^3.0.2",
+    "chokidar-cli": "^3.0.0",
     "concurrently": "^9.2.0",
     "gh-pages": "^6.3.0",
-    "nodemon": "^3.1.10",
     "typescript": "^5.7.3"
   }
 }
